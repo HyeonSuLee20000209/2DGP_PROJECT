@@ -6,7 +6,8 @@ class ElectronicTrap:
         self.image = load_image('Electronic_Trap.png')
         self.x, self.y = 0, 0
 
-    def draw(self):
+    def draw(self, x, y):
+        self.x, self.y = x, y
         self.image.draw(self.x, self.y)
 
 
@@ -16,7 +17,7 @@ electronic = ElectronicTrap()
 
 def update():
     clear_canvas()
-    electronic.draw()
+    electronic.draw(25, 25)
     update_canvas()
 
     delay(0.05)
