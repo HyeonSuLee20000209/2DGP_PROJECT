@@ -1,31 +1,31 @@
 from pico2d import *
 
 
+class Player:
+    def __init__(self):
+        self.image = load_image()
+
 class ElectronicTrap:
     def __init__(self):
         self.image = load_image('Electronic_Trap.png')
-        self.x, self.y = 0, 0
 
-    def draw(self):
-        self.x, self.y = 400, 300
-        self.image.draw(self.x, self.y)
+    def draw(self, x, y):
+        self.image.draw(x, y)
 
 
 class Ground:
     def __init__(self):
         self.image = load_image('Ground.png')
-        self.x, self.y = 0, 0
 
     def draw(self, x, y):
-        self.x, self.y = x, y
-        self.image.draw(self.x, self.y)
+        self.image.draw(x, y)
 
 
 def handle_events():
     global running
 
-    events = get_events()
-    for event in events:
+    key_events = get_events()
+    for event in key_events:
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN:
@@ -50,7 +50,7 @@ ground = None
 def enter():
     global e_trap, ground, running
     e_trap = ElectronicTrap()
-    ground = Ground()
+    ground = [Ground() for i in range(20)]
     running = True
 
 
@@ -65,8 +65,24 @@ def update():
 
 
 def draw():
+    # e_trap.draw(20, 20)
+
     global e_trap, ground
     clear_canvas()
-    e_trap.draw()
-    ground.draw(20, 200)
+    background = pico2d.load_image('background.png')
+    background.draw_now(500, 300, 1000, 600)
+    for i in range(18):
+        ground[i].draw(50 * i + 75, 100)
     update_canvas()
+
+
+pico2d.open_canvas(1000, 600)
+
+enter()
+draw()
+
+while running:
+    handle_events()
+
+
+end()
