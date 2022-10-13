@@ -1,13 +1,10 @@
 import pico2d
-import title_state
-import play_state
 import game_framework
 
+import logo_state
+import title_state
+import play_state
+
 pico2d.open_canvas(1000, 600)
-
-background = pico2d.load_image('background.png')
-background.draw_now(500, 300, 1000, 600)
-
-play_state
-
+game_framework.run(play_state)
 pico2d.close_canvas()
