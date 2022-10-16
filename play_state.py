@@ -3,7 +3,6 @@ from pico2d import *
 
 import game_framework
 import title_state
-import math
 
 
 class Ground:
@@ -52,7 +51,8 @@ class Monster1:
         self.x, self.y = 0, 0
         self.x1, self.y1 = 0, 0
         self.x2, self.y2 = 0, 0
-        self.frame = 0
+        self.frame = [0, 1, 2, 3, 4, 3, 2, 1]
+        self.what_frame = 0
         self.count = 0
         self.dir = right
 
@@ -73,17 +73,17 @@ class Monster1:
         else:
             self.x -= 0.5
 
-        if self.count % 50 == 0:
-            monster1.frame = (monster1.frame + 1) % 5
+        if self.count % 20 == 0:
+            monster1.what_frame = (monster1.what_frame + 1) % 7
 
         self.x1, self.y1 = self.x - 20, self.y - 20
         self.x2, self.y2 = self.x + 20, self.y + 20
 
     def draw(self):
         if self.dir == right:
-            self.image.clip_draw(self.frame * 42, 42, 42, 42, self.x, self.y)
+            self.image.clip_draw(self.frame[self.what_frame] * 42, 42, 42, 42, self.x, self.y)
         elif self.dir == left:
-            self.image.clip_composite_draw(self.frame * 42, 42, 42, 42, 0, 'h', self.x, self.y, 42, 42)
+            self.image.clip_composite_draw(self.frame[self.what_frame] * 42, 42, 42, 42, 0, 'h', self.x, self.y, 42, 42)
 
 
 class Player:
@@ -147,7 +147,7 @@ running = True
 e_trap = None
 ground = None
 background = None
-g_num = 16
+g_num = 7
 
 
 def enter():
@@ -159,7 +159,7 @@ def enter():
     monster1 = Monster1()
     e_trap = ElectronicTrap()
     ground = [Ground() for i in range(g_num)]
-    player.set_location(75, 250 + 20)
+    player.set_location(75, 200 + 20)
     monster1.set_location(225, 125 + 20)
     running = True
 
@@ -179,7 +179,6 @@ def update():
     player.update()
     monster1.update()
     update_canvas()
-    delay(0.001)
 
 
 def draw():
@@ -191,11 +190,11 @@ def draw():
 def draw_world():
     background.draw(500, 300, 1000, 600)
     for i in range(g_num - 2):
-        ground[i].set_location(50 * i + 75, 100)
+        ground[i].set_location(150 * i + 75, 100)
         ground[i].draw()
-    ground[g_num - 2].set_location(50 * 14 + 75, 150)
+    ground[g_num - 2].set_location(50 * 14 + 75, 100)
     ground[g_num - 2].draw()
-    ground[g_num - 1].set_location(50 * 14 + 75, 200)
+    ground[g_num - 1].set_location(50 * 14 + 75, 150)
     ground[g_num - 1].draw()
     # e_trap.draw(50 * 8 + 75, 100 + 50)
     player.draw()
@@ -207,10 +206,12 @@ def is_crash_ground(n):
         if ground[i].x1 < player.x2 and ground[i].x2 > player.x1:
             if player.y1 > ground[i].y2 > player.y1 - 2:
                 player.crash_check = True
-        elif player.y < 0:
-            player.set_location(75, 250 + 20)
+                return
         else:
             pass
+
+    if player.y < 0:
+        player.set_location(75, 200 + 20)
 
 
 def is_crash_wall(n):
