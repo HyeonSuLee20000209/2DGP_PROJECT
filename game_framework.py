@@ -61,8 +61,8 @@ def run(start_state):
     while running:
         stack[-1].handle_events()
         if stack[-1] == play_state:
-            if 0 + 11 < play_state.player.x + play_state.player.move < 1000 - 11:
-                play_state.player.x += play_state.player.move
+            if 0 + 11 < play_state.p.x + play_state.p.move < 1000 - 11:
+                play_state.p.x += play_state.p.move
         stack[-1].draw()
         stack[-1].update()
     # repeatedly delete the top of the stack

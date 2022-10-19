@@ -10,7 +10,7 @@ class Ground:
         self.x2, self.y2 = 0, 0
 
         if Ground.image is None:
-            Ground.image = pico2d.load_image('Ground.png')
+            Ground.image = pico2d.load_image('resource/Ground.png')
 
     def set_location(self, x, y):
         self.x, self.y = x, y
