@@ -1,4 +1,5 @@
 import pico2d
+import play_state
 
 right = 1
 left = -1

@@ -18,6 +18,9 @@ g_list = None
 background = None
 g_num = 7
 
+right = 1
+left = -1
+
 
 def enter():
     global p, m1
@@ -45,21 +48,33 @@ def update():
         p.jump()
     else:
         p.gravity()
-    p.update()
-    m1.update()
 
     for g in g_list:
         if is_crash(p, g):
-            if p.dir == right:
-                p.x -= 2 * p.move
-            else:
-                p.x += 2 * p.move
+            if p.crash_check:
+                p.frame = 2
+                p.count = 0
+                p.crash_check = False
+
+                if p.dir == right:
+                    p.x += 4
+                if p.dir == left:
+                    p.x -= 4
+            elif p.dir == right:
+                p.x -= 2
+            elif p.dir == left:
+                p.x += 2
             break
 
     if is_crash(p, m1):
-        pass
+        # p.set_location(75, 200 + 20)
+        p.crash_check = True
 
     p.x += p.move
+
+    p.update()
+    m1.update()
+
     update_canvas()
 
 
@@ -71,13 +86,15 @@ def draw():
 
 def draw_world():
     background.draw(500, 300, 1000, 600)
-    for i in range(g_num - 2):
+    for i in range(g_num - 3):
         g_list[i].set_location(150 * i + 75, 100)
         g_list[i].draw()
     g_list[g_num - 2].set_location(50 * 14 + 75, 150)
     g_list[g_num - 2].draw()
     g_list[g_num - 1].set_location(50 * 14 + 75, 200)
     g_list[g_num - 1].draw()
+    g_list[g_num - 3].set_location(150 * 0 + 75, 250)
+    g_list[g_num - 3].draw()
     # e_trap.draw(50 * 8 + 75, 100 + 50)
     p.draw()
     m1.draw()
@@ -98,10 +115,6 @@ def is_crash_ground(n):
 
     if p.y < 0:
         p.set_location(75, 200 + 20)
-
-
-right = 1
-left = -1
 
 
 def is_crash(a, b):
