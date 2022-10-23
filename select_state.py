@@ -1,8 +1,8 @@
+import pico2d
 from pico2d import *
 
 import game_framework
 import play_state
-
 
 image = None
 
@@ -10,7 +10,7 @@ image = None
 def enter():
     global image
     if image is None:
-        image = load_image('resource/title.png')
+        image = load_image('resource/stage_select.png')
 
 
 def exit():
@@ -50,3 +50,4 @@ def pause():
 
 def resume():
     pass
+
