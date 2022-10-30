@@ -1,5 +1,5 @@
 import play_state
-
+import pico2d
 
 class GameState:
     def __init__(self, state):
@@ -62,7 +62,8 @@ def run(start_state):
         stack[-1].handle_events()
         stack[-1].draw()
         stack[-1].update()
-    # repeatedly delete the top of the stack
+        pico2d.delay(0.001)
+        # repeatedly delete the top of the stack
     while len(stack) > 0:
         stack[-1].exit()
         stack.pop()
