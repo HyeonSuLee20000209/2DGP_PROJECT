@@ -1,10 +1,6 @@
 import pico2d
 import play_state
 
-right = 1
-left = -1
-LD, LU, RD, RU = range(4)
-
 
 class IDLE:
     @staticmethod
@@ -45,6 +41,9 @@ class RUN:
     def draw():
         pass
 
+
+LD, LU, RD, RU = range(4)
+left, right = range(2)
 
 key_event_table = {
     (pico2d.SDL_KEYDOWN, pico2d.SDLK_LEFT)    : LD,
