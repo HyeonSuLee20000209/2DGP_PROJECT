@@ -20,7 +20,8 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.change_state(title_state)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_q):
-            game_framework.change_state(title_state)
+            # game_framework.change_state(title_state)
+            game_framework.quit()
         else:
             p.handle_events(event)
 

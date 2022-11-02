@@ -10,7 +10,7 @@ logo_time = True
 
 def enter():
     global image
-    image = load_image('tuk_credit.png')
+    image = load_image('resource/tuk_credit.png')
     pass
 
 

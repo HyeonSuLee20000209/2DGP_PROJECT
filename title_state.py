@@ -4,13 +4,12 @@ import game_framework
 import play_state
 
 
-image = None
+image = True
 
 
 def enter():
     global image
-    if image is None:
-        image = load_image('resource/title.png')
+    image = load_image('resource/title.png')
 
 
 def exit():

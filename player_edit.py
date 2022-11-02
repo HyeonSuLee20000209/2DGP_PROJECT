@@ -53,7 +53,7 @@ class RUN:
     def do(player):
         player.frame = (player.frame + 1) % 4
         player.x += player.dir
-        player.x = pico2d.clamp(0, player.x, 800)
+        player.x = pico2d.clamp(0, player.x, 1000)
         pass
 
     @staticmethod
@@ -86,7 +86,7 @@ class Player:
     image = None
 
     def __init__(self):
-        self.x, self.y = 50, 50
+        self.x, self.y = 0, 0
         self.frame = 0
         self.dir = 0
         self.face_dir = right
@@ -117,3 +117,7 @@ class Player:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+
+    # 기타 다른 함수
+    def set_location(self, x, y):
+        pass

@@ -95,7 +95,7 @@ class Player:
     def set_location(self, x, y):
         self.x, self.y = x, y
         self.x1, self.y1 = x - 20, y - 20
-        self.x1, self.y2 = x + 20, y + 20
+        self.x2, self.y2 = x + 20, y + 20
 
     def draw(self):
         if self.move > 0:
