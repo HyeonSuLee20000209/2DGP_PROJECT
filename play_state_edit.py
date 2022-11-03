@@ -6,11 +6,14 @@ import title_state
 
 from player_edit import Player
 from background import Background
+from ground import Ground
 
 import game_world
 
 p = None
 bg = None
+g = []
+g_num = 10
 
 
 def handle_events():
@@ -28,11 +31,13 @@ def handle_events():
 
 
 def enter():
-    global p, bg
+    global p, bg, g
     p = Player(75, 200 + 20)
     bg = Background()
-
+    for i in range(g_num):
+        g.append(Ground(50 * i + 25, 50))
     game_world.add_object(bg, 0)
+    game_world.add_all_objects(g, 1)
     game_world.add_object(p, 2)
     pass
 

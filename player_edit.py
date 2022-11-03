@@ -95,8 +95,8 @@ class Player:
             self.image = pico2d.load_image('resource/Player.png')
 
         self.x, self.y = x, y
-        self.x1, self.y1 = x - 25, y - 25
-        self.x2, self.y2 = x + 25, y + 25
+        self.x1, self.y1 = self.x - 25, self.y - 25
+        self.x2, self.y2 = self.x + 25, self.y + 25
         self.dir = 0
         self.velocity = 0
         self.frame = 0
@@ -108,6 +108,7 @@ class Player:
 
     def update(self):
         self.cur_state.do(self)
+        self.set_location()
 
         if self.event_queue:        # 만약에 list event_queue 안에 무언가 들어 있으면
             event = self.event_queue.pop()
@@ -125,3 +126,7 @@ class Player:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+
+    def set_location(self):
+        self.x1, self.y1 = self.x - 25, self.y - 25
+        self.x2, self.y2 = self.x + 25, self.y + 25
