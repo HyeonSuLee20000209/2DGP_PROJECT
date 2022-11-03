@@ -4,9 +4,10 @@ from pico2d import *
 import game_framework
 import title_state
 
+from player_edit import Player
+from background import Background
 
-import player_edit
-
+import game_world
 
 p = None
 bg = None
@@ -28,21 +29,21 @@ def handle_events():
 
 def enter():
     global p, bg
+    p = Player(75, 200 + 20)
+    bg = Background()
 
-    p = player_edit.Player()
-    bg = load_image('resource/Background.png')
+    game_world.add_object(bg, 0)
+    game_world.add_object(p, 2)
     pass
 
 
 def exit():
-    global p, bg
-    del p
-    del bg
+    game_world.clear()
 
 
 def update():
-    p.update()
-    pass
+    for game_object in game_world.all_objects():
+        game_object.update()
 
 
 def draw():
@@ -52,8 +53,8 @@ def draw():
 
 
 def draw_world():
-    bg.draw(500, 300, 1000, 600)
-    p.draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
 
 
 def is_crash(a, b):
