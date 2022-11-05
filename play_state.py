@@ -14,7 +14,7 @@ p = None
 m1 = None
 running = True
 e_trap = None
-g_list = None
+g_list = []
 background = None
 g_num = 7
 
@@ -30,7 +30,7 @@ def enter():
     p = player.Player()
     m1 = monster.Monster1()
     e_trap = electric_trap.ElectronicTrap()
-    g_list = [ground.Ground() for i in range(g_num)]
+    g_list = [ground.Ground(0, 0) for i in range(g_num)]
     p.set_location(75, 200 + 20)
     m1.set_location(225, 125 + 20)
     running = True

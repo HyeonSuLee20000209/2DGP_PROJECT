@@ -13,7 +13,7 @@ import game_world
 player = None
 bg = None
 ground = []
-g_num = 10
+g_num = 10 + 5
 
 
 def handle_events():
@@ -46,9 +46,27 @@ def collide(a, b):
     return True
 
 
+def collide_ground(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b:
+        return False
+    if right_a < left_b:
+        return False
+    if top_a < bottom_b:
+        return False
+    if bottom_a > top_b:
+        return False
+    if bottom_a < top_b:
+        return True
+
+    return False
+
+
 def enter():
     global player
-    player = Player(75, 200 + 20)
+    player = Player(75, 150 + 20)
     game_world.add_object(player, 2)
 
     global bg
@@ -56,8 +74,12 @@ def enter():
     game_world.add_object(bg, 0)
 
     global ground
-    for i in range(g_num):
+    for i in range(g_num - 5):
         ground.append(Ground(50 * i + 25, 50))
+    for i in range(5):
+        ground.append(Ground(50 * (g_num - 5) + 25, 50 * (i + 1)))
+        ground.append(Ground(0 + 25, 50 * (i + 1)))
+
     game_world.add_all_objects(ground, 1)
     pass
 
@@ -66,12 +88,23 @@ def exit():
     game_world.clear()
 
 
+left, right, up, down = range(4)
+
+
 def update():
+    for g in ground:
+        if collide_ground(player, g):
+            player.crash_check = True
+
     for game_object in game_world.all_objects():
         game_object.update()
+
     for g in ground:
         if collide(player, g):
-            player.crash_check = True
+            player.x -= player.velocity * game_framework.frame_time
+
+    delay(0.001)
+
 
 def draw():
     clear_canvas()

@@ -4,12 +4,12 @@ import game_world
 
 
 PIXEL_PER_METER = 10.0 / 0.3
-RUN_SPEED_KMPH = 20.0
+RUN_SPEED_KMPH = 30.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-TIME_PER_ACTION = 0.5
+TIME_PER_ACTION = 1.0
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 4
 
@@ -26,16 +26,11 @@ class IDLE:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         pass
 
     @staticmethod
     def draw(player):
-        if player.dir == right:
-            player.image.clip_draw(int(player.frame) * 42, 0, 42, 42, player.x, player.y)
-        else:
-            player.image.clip_composite_draw(int(player.frame) * 42, 0, 42, 42,
-                                             0, 'h', player.x, player.y, 42, 42)
+        player.image.clip_draw(player.frame * 42, 0, 42, 42, player.x, player.y)
 
 
 class RUN:
@@ -53,7 +48,7 @@ class RUN:
 
     @staticmethod
     def exit(player):
-        player.face_dir = player.dir
+        player.x -= player.velocity * game_framework.frame_time
         player.velocity = 0
         pass
 
@@ -65,7 +60,7 @@ class RUN:
 
     @staticmethod
     def draw(player):
-        if player.dir == right:
+        if player.dir > 0:
             player.image.clip_draw(int(player.frame) * 42, 42, 42, 42, player.x, player.y)
         else:
             player.image.clip_composite_draw(int(player.frame) * 42, 42, 42, 42,
@@ -96,12 +91,16 @@ class Player:
             self.image = pico2d.load_image('resource/Player.png')
 
         self.x, self.y = x, y
+        self.start = [75, 150 + 20]
+
         self.dir = 0
         self.velocity = 0
         self.frame = 0
 
-        self.is_jump = True
         self.crash_check = False
+        self.crash_dir = None
+
+        self.is_jump = True
         self.jump_count = 0
 
         self.event_queue = []
@@ -116,6 +115,8 @@ class Player:
             self.jump()
         else:
             self.gravity()
+
+        self.die()
 
         if self.event_queue:        # 만약에 list event_queue 안에 무언가 들어 있으면
             event = self.event_queue.pop()
@@ -140,12 +141,20 @@ class Player:
 
     def jump(self):
         self.y += RUN_SPEED_PPS * game_framework.frame_time
+        self.frame = 1
 
         self.jump_count += 1
 
-        if self.jump_count == 100:
+        if self.jump_count % 50 == 0:
             self.crash_check = False
-            self.jump_count = 0
 
     def gravity(self):
         self.y -= RUN_SPEED_PPS * game_framework.frame_time
+        self.frame = 3
+
+    def set_location(self, x, y):
+        self.x, self.y = x, y
+
+    def die(self):
+        if self.y < 0:
+            self.x, self.y = self.start[0], self.start[1]
