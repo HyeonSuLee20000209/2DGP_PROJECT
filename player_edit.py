@@ -1,5 +1,6 @@
 import pico2d
 import game_framework
+import game_world
 
 
 PIXEL_PER_METER = 10.0 / 0.3
@@ -95,11 +96,13 @@ class Player:
             self.image = pico2d.load_image('resource/Player.png')
 
         self.x, self.y = x, y
-        self.x1, self.y1 = self.x - 25, self.y - 25
-        self.x2, self.y2 = self.x + 25, self.y + 25
         self.dir = 0
         self.velocity = 0
         self.frame = 0
+
+        self.is_jump = True
+        self.crash_check = False
+        self.jump_count = 0
 
         self.event_queue = []
         # 초기 상태 설정, entry action 수행
@@ -108,7 +111,11 @@ class Player:
 
     def update(self):
         self.cur_state.do(self)
-        self.set_location()
+
+        if self.crash_check:
+            self.jump()
+        else:
+            self.gravity()
 
         if self.event_queue:        # 만약에 list event_queue 안에 무언가 들어 있으면
             event = self.event_queue.pop()
@@ -118,6 +125,7 @@ class Player:
 
     def draw(self):
         self.cur_state.draw(self)
+        pico2d.draw_rectangle(*self.get_bb())
 
     def add_event(self, key_event):
         self.event_queue.insert(0, key_event)
@@ -127,6 +135,17 @@ class Player:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
-    def set_location(self):
-        self.x1, self.y1 = self.x - 25, self.y - 25
-        self.x2, self.y2 = self.x + 25, self.y + 25
+    def get_bb(self):
+        return self.x - 20, self.y - 20, self.x + 20, self.y + 20
+
+    def jump(self):
+        self.y += RUN_SPEED_PPS * game_framework.frame_time
+
+        self.jump_count += 1
+
+        if self.jump_count == 100:
+            self.crash_check = False
+            self.jump_count = 0
+
+    def gravity(self):
+        self.y -= RUN_SPEED_PPS * game_framework.frame_time

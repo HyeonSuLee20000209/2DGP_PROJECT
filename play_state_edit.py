@@ -10,9 +10,9 @@ from ground import Ground
 
 import game_world
 
-p = None
+player = None
 bg = None
-g = []
+ground = []
 g_num = 10
 
 
@@ -27,18 +27,38 @@ def handle_events():
             # game_framework.change_state(title_state)
             game_framework.quit()
         else:
-            p.handle_events(event)
+            player.handle_events(event)
+
+
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b:
+        return False
+    if right_a < left_b:
+        return False
+    if top_a < bottom_b:
+        return False
+    if bottom_a > top_b:
+        return False
+
+    return True
 
 
 def enter():
-    global p, bg, g
-    p = Player(75, 200 + 20)
+    global player
+    player = Player(75, 200 + 20)
+    game_world.add_object(player, 2)
+
+    global bg
     bg = Background()
-    for i in range(g_num):
-        g.append(Ground(50 * i + 25, 50))
     game_world.add_object(bg, 0)
-    game_world.add_all_objects(g, 1)
-    game_world.add_object(p, 2)
+
+    global ground
+    for i in range(g_num):
+        ground.append(Ground(50 * i + 25, 50))
+    game_world.add_all_objects(ground, 1)
     pass
 
 
@@ -49,7 +69,9 @@ def exit():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-
+    for g in ground:
+        if collide(player, g):
+            player.crash_check = True
 
 def draw():
     clear_canvas()
@@ -60,19 +82,6 @@ def draw():
 def draw_world():
     for game_object in game_world.all_objects():
         game_object.draw()
-
-
-def is_crash(a, b):
-    if a.x1 > b.x2:
-        return False
-    if a.x2 < b.x1:
-        return False
-    if a.y1 > b.y2:
-        return False
-    if a.y2 < b.y1:
-        return False
-
-    return True
 
 
 def pause():
