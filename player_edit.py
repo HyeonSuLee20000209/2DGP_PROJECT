@@ -9,7 +9,7 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-TIME_PER_ACTION = 1.0
+TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 4
 
@@ -145,10 +145,12 @@ class Player:
 
         self.jump_count += 1
 
-        if self.jump_count % 50 == 0:
+        if self.jump_count % 100 == 0:
             self.crash_check = False
 
     def gravity(self):
+        self.jump_count = 0
+
         self.y -= RUN_SPEED_PPS * game_framework.frame_time
         self.frame = 3
 

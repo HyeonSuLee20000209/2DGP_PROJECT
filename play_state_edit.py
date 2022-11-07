@@ -5,6 +5,7 @@ import game_framework
 import title_state
 
 from player_edit import Player
+import player_edit
 from background import Background
 from ground import Ground
 
@@ -46,20 +47,13 @@ def collide(a, b):
     return True
 
 
-def collide_ground(a, b):
+def collide_top(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if left_a > right_b:
-        return False
-    if right_a < left_b:
-        return False
-    if top_a < bottom_b:
-        return False
-    if bottom_a > top_b:
-        return False
-    if bottom_a < top_b:
-        return True
+    if left_b < left_a < right_b or left_b < right_a < right_b:
+        if bottom_b < top_a < top_b:
+            return True
 
     return False
 
@@ -79,7 +73,7 @@ def enter():
     for i in range(5):
         ground.append(Ground(50 * (g_num - 5) + 25, 50 * (i + 1)))
         ground.append(Ground(0 + 25, 50 * (i + 1)))
-
+    ground.append(Ground(0 + 25 + 50 * 3, 50 * 3))
     game_world.add_all_objects(ground, 1)
     pass
 
@@ -93,7 +87,7 @@ left, right, up, down = range(4)
 
 def update():
     for g in ground:
-        if collide_ground(player, g):
+        if collide(player, g):
             player.crash_check = True
 
     for game_object in game_world.all_objects():
@@ -102,9 +96,9 @@ def update():
     for g in ground:
         if collide(player, g):
             player.x -= player.velocity * game_framework.frame_time
-
-    delay(0.001)
-
+        if collide_top(player, g):
+            player.y -= player_edit.RUN_SPEED_PPS * game_framework.frame_time
+            player.crash_check = False
 
 def draw():
     clear_canvas()
