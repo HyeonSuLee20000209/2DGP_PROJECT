@@ -1,14 +1,14 @@
 import pico2d
 
 
-class Ground:
+class ETrap:
     image = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
 
-        if Ground.image is None:
-            Ground.image = pico2d.load_image('resource/Ground.png')
+        if ETrap.image is None:
+            ETrap.image = pico2d.load_image('resource/Electronic_Trap.png')
 
     def draw(self):
         self.image.draw(self.x, self.y)
