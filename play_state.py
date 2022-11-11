@@ -9,14 +9,17 @@ from player import Player
 from background import Background
 from ground import Ground
 from e_trap import ETrap
+from double_jump import DoubleJump
 
 import game_world
 
 p = None
 bg = None
 ground = []
-e_trap = []
 g_num = 10
+e_trap = []
+dj = []
+
 
 
 def handle_events():
@@ -75,14 +78,20 @@ def enter():
     for i in range(5):
         ground.append(Ground(0 + 25, 50 * (i + 1)))
     ground.append(Ground(0 + 25 + 50 * 3, 50 * 3))
+    ground.append(Ground(0 + 25 + 50 * 2, 50 * 2))
     game_world.add_all_objects(ground, 1)
 
     global e_trap
     e_trap.append(ETrap(500 + 25, 50))
     game_world.add_all_objects(e_trap, 1)
 
+    global dj
+    dj.append(DoubleJump(0 + 25 + 50 * 2, 50 * 6))
+    game_world.add_all_objects(dj, 1)
+
     game_world.add_collision_pairs(p, ground, 'p:ground')
     game_world.add_collision_pairs(p, e_trap, 'p:e_trap')
+    game_world.add_collision_pairs(p, dj, 'p:dj')
 
 
 def exit():

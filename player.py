@@ -83,6 +83,8 @@ next_state = {
 }
 
 
+dj, fj = range(2)
+
 class Player:
     image = None
 
@@ -107,6 +109,8 @@ class Player:
         # 초기 상태 설정, entry action 수행
         self.cur_state = IDLE
         self.cur_state.enter(self, None)
+
+        self.item = None
 
     def update(self):
         self.cur_state.do(self)
@@ -136,6 +140,12 @@ class Player:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+        if self.item == dj:
+            if (event.type, event.key) == (pico2d.SDL_KEYDOWN, pico2d.SDLK_SPACE):
+                self.jump_count = 0
+                self.crash_check = True
+                self.item = None
+                self.image = pico2d.load_image('resource/Player.png')
 
     def get_bb(self):
         return self.x - 20, self.y - 20, self.x + 20, self.y + 20
@@ -166,3 +176,7 @@ class Player:
             self.x -= self.velocity * game_framework.frame_time
         elif group == 'p:e_trap':
             self.die()
+        elif group == 'p:dj':
+            self.item = dj
+            self.image = pico2d.load_image('resource/DPlayer.png')
+            pass

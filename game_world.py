@@ -13,9 +13,8 @@ def add_all_objects(ol, depth):
 def remove_object(o):
     for layer in objects:
         if o in layer:
-            # 리스트 삭제
             layer.remove(o)
-            # 실제 메모리 삭제
+            remove_collision_object(o)
             del o
             return
     raise ValueError('Trying destroy non existing object')

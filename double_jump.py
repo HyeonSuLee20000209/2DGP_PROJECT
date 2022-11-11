@@ -1,14 +1,15 @@
 import pico2d
+import game_world
 
 
-class ETrap:
+class DoubleJump:
     image = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
 
-        if ETrap.image is None:
-            ETrap.image = pico2d.load_image('resource/ElectronicTrap.png')
+        if DoubleJump.image is None:
+            DoubleJump.image = pico2d.load_image('resource/DoubleJump.png')
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -21,4 +22,5 @@ class ETrap:
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
     def handle_collision(self, other, group):
-        pass
+        if group == 'p:dj':
+            game_world.remove_object(self)

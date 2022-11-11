@@ -10,7 +10,7 @@ image = None
 def enter():
     global image
     if image is None:
-        image = load_image('resource/stage_select.png')
+        image = load_image('resource/StageSelect.png')
 
 
 def exit():
