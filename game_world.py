@@ -1,4 +1,5 @@
-objects = [[], [], []]
+# 0 배경, 1 플레이어, 2 땅, 3 아이템
+objects = [[], [], [], []]
 collision_group = dict()
 
 
@@ -33,9 +34,18 @@ def clear():
         layer.clear()
 
 
+def layer_objects(num):
+    for o in objects[num]:
+        yield o
+
+
+def layer_clear(num):
+    for o in layer_objects(num):
+        del o
+
+
 def add_collision_pairs(a, b, group):
     if group not in collision_group:
-        print(f'add new group : {group}')
         collision_group[group] = [[], []]
 
     if a:

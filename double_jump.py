@@ -11,6 +11,8 @@ class DoubleJump:
         if DoubleJump.image is None:
             DoubleJump.image = pico2d.load_image('resource/DoubleJump.png')
 
+        self.exist = True
+
     def draw(self):
         self.image.draw(self.x, self.y)
         pico2d.draw_rectangle(*self.get_bb())
@@ -24,3 +26,4 @@ class DoubleJump:
     def handle_collision(self, other, group):
         if group == 'p:dj':
             game_world.remove_object(self)
+            self.exist = False

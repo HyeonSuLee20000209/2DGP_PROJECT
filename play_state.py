@@ -20,6 +20,9 @@ g_num = 10
 e_trap = []
 dj = []
 
+dj_list = {
+    (0 + 25 + 50 * 2, 50 * 6), (0 + 25 + 50 * 9, 50 * 6)
+}
 
 
 def handle_events():
@@ -66,7 +69,7 @@ def collide_top(a, b):
 def enter():
     global p
     p = Player(75, 150 + 20)
-    game_world.add_object(p, 2)
+    game_world.add_object(p, 1)
 
     global bg
     bg = Background()
@@ -79,15 +82,16 @@ def enter():
         ground.append(Ground(0 + 25, 50 * (i + 1)))
     ground.append(Ground(0 + 25 + 50 * 3, 50 * 3))
     ground.append(Ground(0 + 25 + 50 * 2, 50 * 2))
-    game_world.add_all_objects(ground, 1)
+    game_world.add_all_objects(ground, 2)
 
     global e_trap
     e_trap.append(ETrap(500 + 25, 50))
-    game_world.add_all_objects(e_trap, 1)
+    game_world.add_all_objects(e_trap, 2)
 
     global dj
-    dj.append(DoubleJump(0 + 25 + 50 * 2, 50 * 6))
-    game_world.add_all_objects(dj, 1)
+    for x, y in dj_list:
+        dj.append(DoubleJump(x, y))
+    game_world.add_all_objects(dj, 3)
 
     game_world.add_collision_pairs(p, ground, 'p:ground')
     game_world.add_collision_pairs(p, e_trap, 'p:e_trap')
@@ -137,3 +141,11 @@ def pause():
 
 def resume():
     pass
+
+
+def reset():
+    game_world.layer_clear(3)
+    for x, y in dj_list:
+        dj.append(DoubleJump(x, y))
+    game_world.add_all_objects(dj, 3)
+    game_world.add_collision_pairs(p, dj, 'p:dj')

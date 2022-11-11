@@ -1,6 +1,7 @@
 import pico2d
 import game_framework
 import game_world
+import play_state
 
 
 PIXEL_PER_METER = 10.0 / 0.3
@@ -170,12 +171,14 @@ class Player:
 
     def die(self):
         self.x, self.y = self.start[0], self.start[1]
+        play_state.reset()
 
     def handle_collision(self, other, group):
         if group == 'p:ground':
             self.x -= self.velocity * game_framework.frame_time
         elif group == 'p:e_trap':
             self.die()
+            self.item = None
         elif group == 'p:dj':
             self.item = dj
             self.image = pico2d.load_image('resource/DPlayer.png')
