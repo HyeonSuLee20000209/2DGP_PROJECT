@@ -4,12 +4,17 @@ from pico2d import *
 import game_framework
 import title_state
 
-import player
-from player import Player
 from background import Background
-from ground import Ground
-from e_trap import ETrap
-from double_jump import DoubleJump
+
+import object.player
+from object.player import Player
+from object.ground import Ground
+from object.e_trap import ETrap
+from object.spike import Spike
+from object.double_jump import DoubleJump
+from object.far_jump import FarJump
+from object.star import Star
+
 
 import game_world
 
@@ -18,12 +23,32 @@ bg = None
 ground = []
 g_num = 10
 e_trap = []
+spike = []
 dj = []
+fj = []
+star = []
 
-dj_list = {
-    (0 + 25 + 50 * 2, 50 * 6), (0 + 25 + 50 * 9, 50 * 6)
+g_list = {}
+
+e_list = {
+    (25 + 50 * 10, 25)
 }
 
+sp_list = {
+    (25 + 50 * 5, 25 + 50 * 1)
+}
+
+dj_list = {
+    (25 + 50 * 2, 25 + 50 * 5), (25 + 50 * 9, 25 + 50 * 5)
+}
+
+fj_list = {
+    (25 + 50 * 4, 25 + 50 * 4), (25 + 50 * 9, 25 + 50 * 4)
+}
+
+st_list = {
+    (25 + 50 * 14, 25 + 50 * 1)
+}
 
 def handle_events():
     events = get_events()
@@ -35,6 +60,8 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_q):
             # game_framework.change_state(title_state)
             game_framework.quit()
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_s):
+            reset()
         else:
             p.handle_events(event)
 
@@ -77,27 +104,50 @@ def enter():
 
     global ground
     for i in range(g_num):
-        ground.append(Ground(50 * i + 25, 50))
+        ground.append(Ground(50 * i + 25, 25))
     for i in range(5):
-        ground.append(Ground(0 + 25, 50 * (i + 1)))
-    ground.append(Ground(0 + 25 + 50 * 3, 50 * 3))
-    ground.append(Ground(0 + 25 + 50 * 2, 50 * 2))
+        ground.append(Ground(25, 25 + 50 * i))
+    ground.append(Ground(25 + 50 * 2, 25 + 50 * 1))
+    ground.append(Ground(25 + 50 * 3, 25 + 50 * 2))
     game_world.add_all_objects(ground, 2)
 
+    game_world.add_collision_pairs(p, ground, 'p:ground')
+
     global e_trap
-    e_trap.append(ETrap(500 + 25, 50))
+    for x, y in e_list:
+        e_trap.append(ETrap(x, y))
     game_world.add_all_objects(e_trap, 2)
+
+    game_world.add_collision_pairs(p, e_trap, 'p:e_trap')
+
+    global spike
+    for x, y in sp_list:
+        spike.append(Spike(x, y))
+    game_world.add_all_objects(spike, 2)
+
+    game_world.add_collision_pairs(p, spike, 'p:spike')
 
     global dj
     for x, y in dj_list:
         dj.append(DoubleJump(x, y))
     game_world.add_all_objects(dj, 3)
 
-    game_world.add_collision_pairs(p, ground, 'p:ground')
-    game_world.add_collision_pairs(p, e_trap, 'p:e_trap')
     game_world.add_collision_pairs(p, dj, 'p:dj')
 
+    global fj
+    for x, y in fj_list:
+        fj.append(FarJump(x, y))
+    game_world.add_all_objects(fj, 3)
 
+    game_world.add_collision_pairs(p, fj, 'p:fj')
+
+    global star
+    for x, y in st_list:
+        star.append(Star(x, y))
+    game_world.add_all_objects(star, 4)
+
+    game_world.add_collision_pairs(p, star, 'p:star')
+    
 def exit():
     game_world.clear()
 
@@ -120,7 +170,7 @@ def update():
 
     for g in ground:
         if collide_top(p, g):
-            p.y -= player.RUN_SPEED_PPS * game_framework.frame_time
+            p.y -= object.player.RUN_SPEED_PPS * game_framework.frame_time
             p.crash_check = False
 
 
@@ -149,3 +199,16 @@ def reset():
         dj.append(DoubleJump(x, y))
     game_world.add_all_objects(dj, 3)
     game_world.add_collision_pairs(p, dj, 'p:dj')
+
+    for x, y in fj_list:
+        fj.append(FarJump(x, y))
+    game_world.add_all_objects(fj, 3)
+    game_world.add_collision_pairs(p, fj, 'p:fj')
+
+    for x, y in st_list:
+        star.append(Star(x, y))
+    game_world.add_all_objects(star, 4)
+    game_world.add_collision_pairs(p, star, 'p:star')
+
+    p.x, p.y = p.start[0], p.start[1]
+    p.item = None

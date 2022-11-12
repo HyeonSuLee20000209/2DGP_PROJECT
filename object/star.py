@@ -2,20 +2,17 @@ import pico2d
 import game_world
 
 
-class DoubleJump:
+class Star:
     image = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
 
-        if DoubleJump.image is None:
-            DoubleJump.image = pico2d.load_image('resource/DoubleJump.png')
-
-        self.exist = True
+        if Star.image is None:
+            Star.image = pico2d.load_image('resource/Star.png')
 
     def draw(self):
         self.image.draw(self.x, self.y)
-        pico2d.draw_rectangle(*self.get_bb())
 
     def update(self):
         pass
@@ -24,6 +21,5 @@ class DoubleJump:
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
     def handle_collision(self, other, group):
-        if group == 'p:dj':
+        if group == 'p:star':
             game_world.remove_object(self)
-            self.exist = False

@@ -1,24 +1,23 @@
 import pico2d
 
 
-class ETrap:
+class Spike:
     image = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
 
-        if ETrap.image is None:
-            ETrap.image = pico2d.load_image('resource/ElectronicTrap.png')
+        if Spike.image is None:
+            Spike.image = pico2d.load_image('resource/Spike.png')
 
     def draw(self):
         self.image.draw(self.x, self.y)
-        pico2d.draw_rectangle(*self.get_bb())
 
     def update(self):
         pass
 
     def get_bb(self):
-        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
+        return self.x - 22, self.y - 7, self.x + 20, self.y
 
     def handle_collision(self, other, group):
         pass

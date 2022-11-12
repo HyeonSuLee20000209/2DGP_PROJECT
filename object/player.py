@@ -12,7 +12,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 4
+FRAMES_PER_ACTION = 8
 
 
 class IDLE:
@@ -46,6 +46,7 @@ class RUN:
         if event == LU:
             player.velocity += RUN_SPEED_PPS
         player.dir = pico2d.clamp(-1, player.velocity, 1)
+        player.f_dir = player.dir
 
     @staticmethod
     def exit(player):
@@ -65,7 +66,7 @@ class RUN:
             player.image.clip_draw(int(player.frame) * 42, 42, 42, 42, player.x, player.y)
         else:
             player.image.clip_composite_draw(int(player.frame) * 42, 42, 42, 42,
-                                             0, 'h', player.x, player.y, 42, 42)
+                                             0, 'h', player.x, player.y, 40, 40)
 
 
 LD, LU, RD, RU = range(4)
@@ -85,6 +86,7 @@ next_state = {
 
 
 dj, fj = range(2)
+
 
 class Player:
     image = None
@@ -112,6 +114,8 @@ class Player:
         self.cur_state.enter(self, None)
 
         self.item = None
+        self.is_fj = False
+        self.f_dir = 1
 
     def update(self):
         self.cur_state.do(self)
@@ -124,6 +128,9 @@ class Player:
         if self.y < 0:
             self.die()
 
+        if self.is_fj is True:
+            self.f_jump()
+
         if self.event_queue:        # 만약에 list event_queue 안에 무언가 들어 있으면
             event = self.event_queue.pop()
             self.cur_state.exit(self)
@@ -132,7 +139,6 @@ class Player:
 
     def draw(self):
         self.cur_state.draw(self)
-        pico2d.draw_rectangle(*self.get_bb())
 
     def add_event(self, key_event):
         self.event_queue.insert(0, key_event)
@@ -141,12 +147,23 @@ class Player:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
-        if self.item == dj:
+            self.is_fj = False
+        if self.item is not None:
             if (event.type, event.key) == (pico2d.SDL_KEYDOWN, pico2d.SDLK_SPACE):
-                self.jump_count = 0
-                self.crash_check = True
-                self.item = None
-                self.image = pico2d.load_image('resource/Player.png')
+                if self.item == dj:
+                    self.jump_count = 0
+                    self.is_fj = False
+                    self.use_item()
+                elif self.velocity == 0:
+                    if self.item == fj:
+                        self.jump_count = 40
+                        self.is_fj = True
+                        self.use_item()
+
+    def use_item(self):
+        self.crash_check = True
+        self.item = None
+        self.image = pico2d.load_image('resource/Player.png')
 
     def get_bb(self):
         return self.x - 20, self.y - 20, self.x + 20, self.y + 20
@@ -157,7 +174,8 @@ class Player:
 
         self.jump_count += 1
 
-        if self.jump_count % 100 == 0:
+        if self.jump_count > 100:
+            self.jump_count = 0
             self.crash_check = False
 
     def gravity(self):
@@ -166,20 +184,37 @@ class Player:
         self.y -= RUN_SPEED_PPS * game_framework.frame_time
         self.frame = 3
 
+    def f_jump(self):
+        self.x += self.f_dir * 400 * game_framework.frame_time
+        self.x = pico2d.clamp(0 + 20, self.x, 1000 - 20)
+
     def set_location(self, x, y):
         self.x, self.y = x, y
 
     def die(self):
         self.x, self.y = self.start[0], self.start[1]
+        self.item = None
+        self.is_fj = False
         play_state.reset()
+        self.image = pico2d.load_image('resource/Player.png')
 
     def handle_collision(self, other, group):
         if group == 'p:ground':
             self.x -= self.velocity * game_framework.frame_time
+            if self.is_fj is True:
+                self.x -= self.f_dir * 400 * game_framework.frame_time
+                self.is_fj = False
         elif group == 'p:e_trap':
+            self.die()
+            self.item = None
+        elif group == 'p:spike':
             self.die()
             self.item = None
         elif group == 'p:dj':
             self.item = dj
             self.image = pico2d.load_image('resource/DPlayer.png')
+        elif group == 'p:fj':
+            self.item = fj
+            self.image = pico2d.load_image('resource/FPlayer.png')
+        elif group == 'p:star':
             pass
