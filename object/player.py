@@ -96,7 +96,7 @@ class Player:
             self.image = pico2d.load_image('resource/Player.png')
 
         self.x, self.y = x, y
-        self.start = [75, 150 + 20]
+        self.start = [25 + 50, 25 + 50 * 10]
 
         self.dir = 0
         self.velocity = 0
@@ -156,7 +156,7 @@ class Player:
                     self.use_item()
                 elif self.velocity == 0:
                     if self.item == fj:
-                        self.jump_count = 40
+                        self.jump_count = 80
                         self.is_fj = True
                         self.use_item()
 
@@ -179,13 +179,11 @@ class Player:
             self.crash_check = False
 
     def gravity(self):
-        self.jump_count = 0
-
         self.y -= RUN_SPEED_PPS * game_framework.frame_time
         self.frame = 3
 
     def f_jump(self):
-        self.x += self.f_dir * 400 * game_framework.frame_time
+        self.x += self.f_dir * 600 * game_framework.frame_time
         self.x = pico2d.clamp(0 + 20, self.x, 1000 - 20)
 
     def set_location(self, x, y):

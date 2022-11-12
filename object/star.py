@@ -1,5 +1,7 @@
 import pico2d
 import game_world
+import game_framework
+import title_state
 
 
 class Star:
@@ -23,3 +25,4 @@ class Star:
     def handle_collision(self, other, group):
         if group == 'p:star':
             game_world.remove_object(self)
+            game_framework.quit()
