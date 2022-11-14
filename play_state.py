@@ -20,6 +20,9 @@ import game_world
 
 p = None
 bg = None
+
+stage = 1
+
 ground = []
 e_trap = []
 spike = []
@@ -173,22 +176,18 @@ def resume():
 
 
 def reset():
-    game_world.layer_clear(3)
-    dj.append(DoubleJump(25 + 50 * 4, 25 + 50 * 3))
-    dj.append(DoubleJump(25 + 50 * 4, 25 + 50 * 6))
-    game_world.add_all_objects(dj, 3)
+    global stage
 
-    game_world.add_collision_pairs(p, dj, 'p:dj')
+    exit()
+    if stage == 1:
+        stage = 2
 
-    fj.append(FarJump(25 + 50 * 9, 25 + 50 * 3))
-    game_world.add_all_objects(fj, 3)
+    enter()
 
-    game_world.add_collision_pairs(p, fj, 'p:fj')
 
-    game_world.layer_clear(4)
-    star.append(Star(25 + 50 * 18, 25))
-    game_world.add_all_objects(star, 4)
+def stage1():
+    pass
 
-    game_world.add_collision_pairs(p, star, 'p:star')
 
+def stage2():
     pass

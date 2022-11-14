@@ -25,4 +25,4 @@ class Star:
     def handle_collision(self, other, group):
         if group == 'p:star':
             game_world.remove_object(self)
-            game_framework.quit()
+            game_framework.change_state(title_state)
