@@ -30,6 +30,8 @@ dj = []
 fj = []
 star = []
 
+start = [0, 0]
+
 
 def handle_events():
     events = get_events()
@@ -75,20 +77,24 @@ def collide_top(a, b):
 
 
 def enter():
+    global stage, start
+    if stage == 1:
+        start = [20 + 50 * 0, 20 + 50 * 2]
+    elif stage == 2:
+        start = [20 + 50 * 0, 20 + 50 * 2]
+
     global p
-    p = Player(25 + 50, 25 + 50 * 10)
+    p = Player(start[0], start[1])
     game_world.add_object(p, 1)
 
     global bg
     bg = Background()
     game_world.add_object(bg, 0)
 
-    global stage
     if stage == 1:
         stage1()
     elif stage == 2:
         stage2()
-
 
 def exit():
     game_world.clear()
@@ -144,53 +150,40 @@ def reset():
 
 def stage1():
     global ground
-    for i in range(5):
-        ground.append(Ground(50 * i + 25, 25 + 50 * 8))
-    for i in range(3):
-        ground.append(Ground(50 * (i + 6) + 25, 25 + 50 * 1))
-    for i in range(7):
-        ground.append(Ground(25 + 50 * 7, 25 + 50 * (i + 5)))
+    for i in range(10):
+        ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
+        ground.append(Ground(25 + 50 * (i + 2), 25 + 50 * 2))
+
     game_world.add_all_objects(ground, 2)
 
     game_world.add_collision_pairs(p, ground, 'p:ground')
 
-    global e_trap
-    for i in range(8):
-        e_trap.append(ETrap(25, 25 + 50 * i))
-    e_trap.append(ETrap(25 + 50 * 5, 25 + 50 * 1))
-    e_trap.append(ETrap(25 + 50 * 5, 25 + 50 * 2))
-    game_world.add_all_objects(e_trap, 2)
-
-    game_world.add_collision_pairs(p, e_trap, 'p:e_trap')
-
-    global spike
-    for i in range(4):
-        spike.append(Spike(25 + 50 * (i + 3), 25 + 50 * 0))
-        spike.append(Spike(25 + 50 * (i + 3), 25 + 50 * 5))
-    game_world.add_all_objects(spike, 2)
-
-    game_world.add_collision_pairs(p, spike, 'p:spike')
-
-    global dj
-    dj.append(DoubleJump(25 + 50 * 4, 25 + 50 * 3))
-    dj.append(DoubleJump(25 + 50 * 4, 25 + 50 * 6))
-    game_world.add_all_objects(dj, 3)
-    game_world.add_collision_pairs(p, dj, 'p:dj')
-
-    global fj
-    fj.append(FarJump(25 + 50 * 9, 25 + 50 * 3))
-    game_world.add_all_objects(fj, 3)
-
-    game_world.add_collision_pairs(p, fj, 'p:fj')
-
-    global star
-    star.append(Star(25 + 50 * 18, 25))
-    game_world.add_all_objects(star, 4)
-
-    game_world.add_collision_pairs(p, star, 'p:star')
-
-    pass
-
 
 def stage2():
+
+    # global e_trap
+    # game_world.add_all_objects(e_trap, 2)
+    #
+    # game_world.add_collision_pairs(p, e_trap, 'p:e_trap')
+    #
+    # global spike
+    # game_world.add_all_objects(spike, 2)
+    #
+    # game_world.add_collision_pairs(p, spike, 'p:spike')
+    #
+    # global dj
+    # game_world.add_all_objects(dj, 3)
+    #
+    # game_world.add_collision_pairs(p, dj, 'p:dj')
+    #
+    # global fj
+    # game_world.add_all_objects(fj, 3)
+    #
+    # game_world.add_collision_pairs(p, fj, 'p:fj')
+    #
+    # global star
+    # game_world.add_all_objects(star, 4)
+    #
+    # game_world.add_collision_pairs(p, star, 'p:star')
+
     pass

@@ -98,7 +98,6 @@ class Player:
             self.image = pico2d.load_image('resource/Player.png')
 
         self.x, self.y = x, y
-        self.start = [25 + 50, 25 + 50 * 10]
 
         self.dir = 0
         self.velocity = 0
@@ -190,7 +189,7 @@ class Player:
         self.x, self.y = x, y
 
     def die(self):
-        self.x, self.y = self.start[0], self.start[1]
+        self.x, self.y = play_state.start[0], play_state.start[1]
         self.item = None
         self.is_fj = False
         play_state.reset()
