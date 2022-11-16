@@ -80,12 +80,14 @@ key_event_table = {
 }
 
 next_state = {
-    IDLE: {LD: RUN, LU: RUN, RD: RUN, RU: RUN},
+    IDLE: {LD: RUN, LU: IDLE, RD: RUN, RU: IDLE},
     RUN:  {LD: IDLE, LU: IDLE, RD: IDLE, RU: IDLE}
 }
 
 
 dj, fj = range(2)
+
+max_count = 50
 
 
 class Player:
@@ -117,19 +119,17 @@ class Player:
         self.is_fj = False
         self.f_dir = 1
 
+        self.is_start = True
+
     def update(self):
         self.cur_state.do(self)
 
-        if self.crash_check:
-            self.jump()
-        else:
-            self.gravity()
+        if self.crash_check: self.jump()
+        else: self.gravity()
 
-        if self.y < 0:
-            self.die()
+        if self.y < 0: self.die()
 
-        if self.is_fj is True:
-            self.f_jump()
+        if self.is_fj is True: self.f_jump()
 
         if self.event_queue:        # 만약에 list event_queue 안에 무언가 들어 있으면
             event = self.event_queue.pop()
@@ -156,7 +156,7 @@ class Player:
                     self.use_item()
                 elif self.velocity == 0:
                     if self.item == fj:
-                        self.jump_count = 80
+                        self.jump_count = max_count * 0.8
                         self.is_fj = True
                         self.use_item()
 
@@ -174,7 +174,7 @@ class Player:
 
         self.jump_count += 1
 
-        if self.jump_count > 100:
+        if self.jump_count > max_count:
             self.jump_count = 0
             self.crash_check = False
 
