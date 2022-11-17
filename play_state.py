@@ -107,6 +107,7 @@ def update():
     for g in ground:
         if collide(p, g):
             p.crash_check = True
+            p.origin_y = g.y + 25 + 20
 
     for game_object in game_world.all_objects():
         game_object.update()
@@ -152,12 +153,18 @@ def stage1():
     global ground
     for i in range(10):
         ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
-        ground.append(Ground(25 + 50 * (i + 2), 25 + 50 * 2))
+        ground.append(Ground(25 + 50 * (i + i + i + 1), 25 + 50 * 1))
 
     game_world.add_all_objects(ground, 2)
 
     game_world.add_collision_pairs(p, ground, 'p:ground')
 
+    global fj
+    fj.append(FarJump(25 + 50 * 3, 25 + 50 * 3))
+
+    game_world.add_all_objects(fj, 3)
+
+    game_world.add_collision_pairs(p, fj, 'p:fj')
 
 def stage2():
 

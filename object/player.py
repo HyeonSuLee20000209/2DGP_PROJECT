@@ -31,7 +31,14 @@ class IDLE:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(player.frame * 42, 0, 42, 42, player.x, player.y)
+        if player.is_fj:
+            if player.f_dir > 0:
+                player.image.clip_draw(int(player.frame) * 42, 42, 42, 42, player.x, player.y)
+            else:
+                player.image.clip_composite_draw(int(player.frame) * 42, 42, 42, 42,
+                                                 0, 'h', player.x, player.y, 40, 40)
+        else:
+            player.image.clip_draw(player.frame * 42, 0, 42, 42, player.x, player.y)
 
 
 class RUN:
@@ -87,7 +94,7 @@ next_state = {
 
 dj, fj = range(2)
 
-max_count = 50
+max = 75
 
 
 class Player:
@@ -106,9 +113,6 @@ class Player:
         self.crash_check = False
         self.crash_dir = None
 
-        self.is_jump = True
-        self.jump_count = 0
-
         self.event_queue = []
         # 초기 상태 설정, entry action 수행
         self.cur_state = IDLE
@@ -120,10 +124,12 @@ class Player:
 
         self.is_start = True
 
+        self.origin_y = y
+
     def update(self):
         self.cur_state.do(self)
 
-        if self.crash_check: self.jump()
+        if self.crash_check: self.jumping()
         else: self.gravity()
 
         if self.y < 0: self.die()
@@ -150,12 +156,11 @@ class Player:
         if self.item is not None:
             if (event.type, event.key) == (pico2d.SDL_KEYDOWN, pico2d.SDLK_SPACE):
                 if self.item == dj:
-                    self.jump_count = 0
+                    self.origin_y = self.y
                     self.is_fj = False
                     self.use_item()
                 elif self.velocity == 0:
                     if self.item == fj:
-                        self.jump_count = max_count * 0.8
                         self.is_fj = True
                         self.use_item()
 
@@ -167,15 +172,12 @@ class Player:
     def get_bb(self):
         return self.x - 20, self.y - 20, self.x + 20, self.y + 20
 
-    def jump(self):
+    def jumping(self):
+        if self.y - self.origin_y > max:
+            self.y = self.origin_y + max
+            self.crash_check = False
         self.y += RUN_SPEED_PPS * game_framework.frame_time
         self.frame = 1
-
-        self.jump_count += 1
-
-        if self.jump_count > max_count:
-            self.jump_count = 0
-            self.crash_check = False
 
     def gravity(self):
         self.y -= RUN_SPEED_PPS * game_framework.frame_time
