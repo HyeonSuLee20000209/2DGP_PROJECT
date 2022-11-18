@@ -161,6 +161,10 @@ class Player:
                     self.use_item()
                 elif self.velocity == 0:
                     if self.item == fj:
+                        global max
+                        max = 20
+                        self.origin_y = self.y
+
                         self.is_fj = True
                         self.use_item()
 
@@ -198,6 +202,9 @@ class Player:
         self.image = pico2d.load_image('resource/Player.png')
 
     def handle_collision(self, other, group):
+        global max
+        max = 75
+
         if group == 'p:ground':
             self.x -= self.velocity * game_framework.frame_time
             if self.is_fj is True:
