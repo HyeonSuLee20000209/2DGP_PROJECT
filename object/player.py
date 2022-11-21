@@ -14,6 +14,8 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
+size = 20
+
 
 class IDLE:
     @staticmethod
@@ -129,12 +131,16 @@ class Player:
     def update(self):
         self.cur_state.do(self)
 
-        if self.crash_check: self.jumping()
-        else: self.gravity()
+        if self.crash_check:
+            self.jumping()
+        else:
+            self.gravity()
 
-        if self.y < 0: self.die()
+        if self.y < 0:
+            self.die()
 
-        if self.is_fj is True: self.f_jump()
+        if self.is_fj is True:
+            self.f_jump()
 
         if self.event_queue:        # 만약에 list event_queue 안에 무언가 들어 있으면
             event = self.event_queue.pop()
@@ -174,7 +180,7 @@ class Player:
         self.image = pico2d.load_image('resource/Player.png')
 
     def get_bb(self):
-        return self.x - 20, self.y - 20, self.x + 20, self.y + 20
+        return self.x - size, self.y - size, self.x + size, self.y + size
 
     def jumping(self):
         if self.y - self.origin_y > max:
@@ -189,7 +195,7 @@ class Player:
 
     def f_jump(self):
         self.x += self.f_dir * 600 * game_framework.frame_time
-        self.x = pico2d.clamp(0 + 20, self.x, 1000 - 20)
+        self.x = pico2d.clamp(0 + size, self.x, 1000 - size)
 
     def set_location(self, x, y):
         self.x, self.y = x, y
@@ -200,6 +206,7 @@ class Player:
         self.is_fj = False
         play_state.reset()
         self.image = pico2d.load_image('resource/Player.png')
+        print('dre')
 
     def handle_collision(self, other, group):
         global max

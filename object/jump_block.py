@@ -1,15 +1,14 @@
 import pico2d
 
-size = 25
 
-class Ground:
+class JumpBlock:
     image = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
 
-        if Ground.image is None:
-            Ground.image = pico2d.load_image('resource/Ground.png')
+        if JumpBlock.image is None:
+            JumpBlock.image = pico2d.load_image('resource/JumpBlock.png')
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -18,7 +17,7 @@ class Ground:
         pass
 
     def get_bb(self):
-        return self.x - size, self.y - size, self.x + size, self.y + size
+        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
     def handle_collision(self, other, group):
         pass

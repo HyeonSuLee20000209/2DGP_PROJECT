@@ -8,6 +8,7 @@ from background import Background
 
 import object.player
 from object.player import Player
+import object.ground
 from object.ground import Ground
 from object.e_trap import ETrap
 from object.spike import Spike
@@ -76,12 +77,25 @@ def collide_top(a, b):
     return False
 
 
+def collide_bottom(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_b < left_a < right_b or left_b < right_a < right_b:
+        if bottom_b < bottom_a < top_b:
+            return True
+
+    return False
+
+
 def enter():
     global stage, start
     if stage == 1:
-        start = [20 + 50 * 0, 20 + 50 * 2]
+        start = [object.player.size + object.ground.size * 2 * 0,
+                 object.player.size + object.ground.size * 2 * 4]
     elif stage == 2:
-        start = [20 + 50 * 0, 20 + 50 * 2]
+        start = [object.player.size + object.ground.size * 2 * 0,
+                 object.player.size + object.ground.size * 2 * 2]
 
     global p
     p = Player(start[0], start[1])
@@ -96,6 +110,7 @@ def enter():
     elif stage == 2:
         stage2()
 
+
 def exit():
     game_world.clear()
 
@@ -105,9 +120,12 @@ left, right, up, down = range(4)
 
 def update():
     for g in ground:
-        if collide(p, g):
+        if collide_bottom(p, g):
             p.crash_check = True
-            p.origin_y = g.y + 25 + 20
+            p.origin_y = g.y + object.player.size + object.ground.size
+        if collide_top(p, g):
+            p.y -= object.player.RUN_SPEED_PPS * game_framework.frame_time
+            p.crash_check = False
 
     for game_object in game_world.all_objects():
         game_object.update()
@@ -116,11 +134,6 @@ def update():
         if collide(a, b):
             a.handle_collision(b, group)
             b.handle_collision(a, group)
-
-    for g in ground:
-        if collide_top(p, g):
-            p.y -= object.player.RUN_SPEED_PPS * game_framework.frame_time
-            p.crash_check = False
 
 
 def draw():
@@ -151,10 +164,13 @@ def reset():
 
 def stage1():
     global ground
-    for i in range(10):
+    for i in range(8):
         ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
-        ground.append(Ground(25 + 50 * (i + i + i + 1), 25 + 50 * 1))
-
+        # ground.append(Ground(25 + 50 * (i + 2), 25 + 50 * 2))
+        ground.append(Ground(25 + 50 * 8, 25 + 50 * i))
+        # ground.append(Ground(25 + 50 * (i + i + i + 1), 25 + 50 * 1))
+    for i in range(10):
+        ground.append(Ground(25 + 50 * i, 25 + 50 * 10))
     game_world.add_all_objects(ground, 2)
 
     game_world.add_collision_pairs(p, ground, 'p:ground')
@@ -165,6 +181,7 @@ def stage1():
     game_world.add_all_objects(fj, 3)
 
     game_world.add_collision_pairs(p, fj, 'p:fj')
+
 
 def stage2():
 

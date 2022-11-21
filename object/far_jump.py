@@ -12,7 +12,7 @@ class FarJump:
             FarJump.image = pico2d.load_image('resource/FarJump.png')
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image.draw(self.x, self.y, 50, 50)
 
     def update(self):
         pass

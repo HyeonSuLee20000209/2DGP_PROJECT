@@ -12,7 +12,7 @@ class DoubleJump:
             DoubleJump.image = pico2d.load_image('resource/DoubleJump.png')
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image.draw(self.x, self.y, 50, 50)
 
     def update(self):
         pass
