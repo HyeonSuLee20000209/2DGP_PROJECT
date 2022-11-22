@@ -46,6 +46,12 @@ class IDLE:
 class RUN:
     @staticmethod
     def enter(player, event):
+        if player.is_revival:
+            player.is_revival = False
+            if event == RU:
+                player.add_event(DIE)
+            if event == LU:
+                player.add_event(DIE)
         if event == RD:
             player.velocity += RUN_SPEED_PPS
         if event == LD:
@@ -61,7 +67,6 @@ class RUN:
     def exit(player):
         player.x -= player.velocity * game_framework.frame_time
         player.velocity = 0
-        pass
 
     @staticmethod
     def do(player):
@@ -78,8 +83,9 @@ class RUN:
                                              0, 'h', player.x, player.y, 40, 40)
 
 
-LD, LU, RD, RU = range(4)
+LD, LU, RD, RU, DIE = range(5)
 left, right = range(2)
+dj, fj = range(2)
 
 key_event_table = {
     (pico2d.SDL_KEYDOWN, pico2d.SDLK_LEFT)    : LD,
@@ -89,14 +95,12 @@ key_event_table = {
 }
 
 next_state = {
-    IDLE: {LD: RUN, LU: IDLE, RD: RUN, RU: IDLE},
-    RUN:  {LD: IDLE, LU: IDLE, RD: IDLE, RU: IDLE}
+    IDLE: {LD: RUN, LU: RUN, RD: RUN, RU: RUN},
+    RUN:  {LD: IDLE, LU: IDLE, RD: IDLE, RU: IDLE, DIE: IDLE}
 }
 
 
-dj, fj = range(2)
-
-max = 75
+max_height = 75
 
 
 class Player:
@@ -125,6 +129,7 @@ class Player:
         self.f_dir = 1
 
         self.is_start = True
+        self.is_revival = False
 
         self.origin_y = y
 
@@ -167,8 +172,8 @@ class Player:
                     self.use_item()
                 elif self.velocity == 0:
                     if self.item == fj:
-                        global max
-                        max = 20
+                        global max_height
+                        max_height = 20
                         self.origin_y = self.y
 
                         self.is_fj = True
@@ -183,8 +188,8 @@ class Player:
         return self.x - size, self.y - size, self.x + size, self.y + size
 
     def jumping(self):
-        if self.y - self.origin_y > max:
-            self.y = self.origin_y + max
+        if self.y - self.origin_y > max_height:
+            self.y = self.origin_y + max_height
             self.crash_check = False
         self.y += RUN_SPEED_PPS * game_framework.frame_time
         self.frame = 1
@@ -204,19 +209,19 @@ class Player:
         self.x, self.y = play_state.start[0], play_state.start[1]
         self.item = None
         self.is_fj = False
-        play_state.reset()
         self.image = pico2d.load_image('resource/Player.png')
-        print('dre')
+        play_state.reset()
 
     def handle_collision(self, other, group):
-        global max
-        max = 75
+        global max_height
+        max_height = 75
 
         if group == 'p:ground':
-            self.x -= self.velocity * game_framework.frame_time
             if self.is_fj is True:
                 self.x -= self.f_dir * 400 * game_framework.frame_time
                 self.is_fj = False
+        if group == 'p:ground_wall':
+            self.x -= self.velocity * game_framework.frame_time
         elif group == 'p:e_trap':
             self.die()
             self.item = None

@@ -70,10 +70,9 @@ def collide_top(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if left_b < left_a < right_b or left_b < right_a < right_b:
+    if left_a < right_b and left_b < right_a:
         if bottom_b < top_a < top_b:
             return True
-
     return False
 
 
@@ -81,10 +80,19 @@ def collide_bottom(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if left_b < left_a < right_b or left_b < right_a < right_b:
+    if left_a < right_b and left_b < right_a:
         if bottom_b < bottom_a < top_b:
             return True
+    return False
 
+
+def collide_lr(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if bottom_a < top_b and bottom_b < top_a:
+        if left_b < right_a < right_b or left_b < left_a < right_b:
+            return True
     return False
 
 
@@ -122,10 +130,16 @@ def update():
     for g in ground:
         if collide_bottom(p, g):
             p.crash_check = True
+            p.y = g.y + object.player.size + object.ground.size
             p.origin_y = g.y + object.player.size + object.ground.size
         if collide_top(p, g):
-            p.y -= object.player.RUN_SPEED_PPS * game_framework.frame_time
             p.crash_check = False
+            p.y = g.y - object.player.size - object.ground.size
+
+        if collide_lr(p, g):
+            print('d')
+            p.handle_collision(g, 'p:ground_wall')
+            g.handle_collision(p, 'p:ground_wall')
 
     for game_object in game_world.all_objects():
         game_object.update()
@@ -156,31 +170,31 @@ def resume():
 
 
 def reset():
-    global stage
+    global stage, p
 
     exit()
     enter()
+    p.is_revival = True
 
 
 def stage1():
     global ground
-    for i in range(8):
+    for i in range(5):
         ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
         # ground.append(Ground(25 + 50 * (i + 2), 25 + 50 * 2))
-        ground.append(Ground(25 + 50 * 8, 25 + 50 * i))
+        # ground.append(Ground(25 + 50 * 8, 25 + 50 * i))
         # ground.append(Ground(25 + 50 * (i + i + i + 1), 25 + 50 * 1))
-    for i in range(10):
-        ground.append(Ground(25 + 50 * i, 25 + 50 * 10))
     game_world.add_all_objects(ground, 2)
 
     game_world.add_collision_pairs(p, ground, 'p:ground')
+    game_world.add_collision_pairs(p, ground, 'p:ground_wall')
 
-    global fj
-    fj.append(FarJump(25 + 50 * 3, 25 + 50 * 3))
+    global dj
+    dj.append(DoubleJump(25 + 50 * 3, 25 + 50 * 3))
 
-    game_world.add_all_objects(fj, 3)
+    game_world.add_all_objects(dj, 3)
 
-    game_world.add_collision_pairs(p, fj, 'p:fj')
+    game_world.add_collision_pairs(p, dj, 'p:dj')
 
 
 def stage2():
