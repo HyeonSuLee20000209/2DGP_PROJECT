@@ -16,7 +16,6 @@ from object.double_jump import DoubleJump
 from object.far_jump import FarJump
 from object.star import Star
 
-
 import game_world
 
 p = None
@@ -70,8 +69,8 @@ def collide_top(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if left_a < right_b and left_b < right_a:
-        if bottom_b < top_a < top_b:
+    if left_b < a.x < right_b:
+        if top_a > bottom_b > bottom_a:
             return True
     return False
 
@@ -80,18 +79,28 @@ def collide_bottom(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if left_a < right_b and left_b < right_a:
-        if bottom_b < bottom_a < top_b:
+    if left_b < a.x < right_b:
+        if top_a > top_b > bottom_a:
             return True
     return False
 
 
-def collide_lr(a, b):
+def collide_right(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if bottom_a < top_b and bottom_b < top_a:
-        if left_b < right_a < right_b or left_b < left_a < right_b:
+    if bottom_b < a.y < top_b:
+        if right_a > left_b > left_a:
+            return True
+    return False
+
+
+def collide_left(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if bottom_b < a.y < top_b:
+        if right_a > right_b > left_a:
             return True
     return False
 
@@ -99,11 +108,11 @@ def collide_lr(a, b):
 def enter():
     global stage, start
     if stage == 1:
-        start = [object.player.size + object.ground.size * 2 * 0,
-                 object.player.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 3,
+                 object.ground.size + object.ground.size * 2 * 3]
     elif stage == 2:
-        start = [object.player.size + object.ground.size * 2 * 0,
-                 object.player.size + object.ground.size * 2 * 2]
+        start = [object.ground.size * 2 * 0,
+                 object.ground.size * 2 * 2]
 
     global p
     p = Player(start[0], start[1])
@@ -136,10 +145,10 @@ def update():
             p.crash_check = False
             p.y = g.y - object.player.size - object.ground.size
 
-        if collide_lr(p, g):
-            print('d')
-            p.handle_collision(g, 'p:ground_wall')
-            g.handle_collision(p, 'p:ground_wall')
+        if collide_right(p, g):
+            p.x = g.x - object.player.size - object.ground.size
+        if collide_left(p, g):
+            p.x = g.x + object.player.size + object.ground.size
 
     for game_object in game_world.all_objects():
         game_object.update()
@@ -179,15 +188,15 @@ def reset():
 
 def stage1():
     global ground
-    for i in range(5):
+    for i in range(6):
         ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
-        # ground.append(Ground(25 + 50 * (i + 2), 25 + 50 * 2))
-        # ground.append(Ground(25 + 50 * 8, 25 + 50 * i))
+        # ground.append(Ground(25 + 50 * (i + 1), 25 + 50 * 2))
+        ground.append(Ground(25 + 50 * 5, 25 + 50 * i))
+        # ground.append(Ground(25 + 50 * 1, 25 + 50 * i))
         # ground.append(Ground(25 + 50 * (i + i + i + 1), 25 + 50 * 1))
     game_world.add_all_objects(ground, 2)
 
     game_world.add_collision_pairs(p, ground, 'p:ground')
-    game_world.add_collision_pairs(p, ground, 'p:ground_wall')
 
     global dj
     dj.append(DoubleJump(25 + 50 * 3, 25 + 50 * 3))
@@ -198,7 +207,6 @@ def stage1():
 
 
 def stage2():
-
     # global e_trap
     # game_world.add_all_objects(e_trap, 2)
     #

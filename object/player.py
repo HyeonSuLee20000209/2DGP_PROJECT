@@ -220,8 +220,6 @@ class Player:
             if self.is_fj is True:
                 self.x -= self.f_dir * 400 * game_framework.frame_time
                 self.is_fj = False
-        if group == 'p:ground_wall':
-            self.x -= self.velocity * game_framework.frame_time
         elif group == 'p:e_trap':
             self.die()
             self.item = None
