@@ -19,8 +19,8 @@ class Spike:
     def get_bb(self):
         return self.x - 22, self.y - 7, self.x + 20, self.y
 
-    def handle_collision(self, other, group):
+    def handle_collision(self, other, group, dir):
         pass
 
-    def handle_collision_bottom(self, other, group):
+    def handle_collision_dir(self, other, group, dir):
         pass

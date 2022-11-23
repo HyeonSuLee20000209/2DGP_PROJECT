@@ -86,7 +86,7 @@ class RUN:
 
 
 LD, LU, RD, RU, DIE = range(5)
-left, right = range(2)
+top, bottom, right, left = range(4)
 dj, fj = range(2)
 
 key_event_table = {
@@ -239,15 +239,21 @@ class Player:
     def handle_collision_dir(self, other, group, dir):
         global max_height
 
-        top, bottom, right, left = range(4)
+        if dir == top:
+            self.crash_check = False
+            self.y = other.y - size - object.ground.size
 
-        self.crash_check = True
-        self.y = other.y + size + object.ground.size
-        self.origin_y = other.y + size + object.ground.size
+        elif dir == bottom:
+            self.crash_check = True
+            self.y = other.y + size + object.ground.size
+            self.origin_y = other.y + size + object.ground.size
 
-        if dir == bottom:
             if group == 'p:ground':
                 max_height = 75
             elif group == 'p:jb':
-                max_height = 150
+                max_height = 125
                 pass
+        elif dir == right:
+            self.x = other.x - size - object.ground.size
+        elif dir == left:
+            self.x = other.x + size + object.ground.size

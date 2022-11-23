@@ -120,9 +120,9 @@ def collide_dir(a, b):
             return True, bottom
     if bottom_b < a.y < top_b:
         if right_a > left_b > left_a:
-            return True, right
-        if right_a > right_b > left_a:
             return True, left
+        if right_a > right_b > left_a:
+            return True, right
 
     return False
 
@@ -158,27 +158,6 @@ up, bottom, left, right = range(4)
 
 
 def update():
-    for g in ground:
-        if collide_top(p, g):
-            p.crash_check = False
-            p.y = g.y - object.player.size - object.ground.size
-
-        if collide_right(p, g):
-            p.x = g.x - object.player.size - object.ground.size
-        if collide_left(p, g):
-            p.x = g.x + object.player.size + object.ground.size
-
-    # for j_b in jblock:
-    #     if collide_bottom(p, g):
-    #         p.crash_check = True
-    #         p.y = g.y + object.player.size + object.ground.size
-    #         p.origin_y = g.y + object.player.size + object.ground.size
-    #     if collide_bottom(p, j_b):
-    #         object.player.max_height *= 1.5
-    #         p.crash_check = True
-    #         p.y = j_b.y + object.player.size + object.ground.size
-    #         p.origin_y = j_b.y + object.player.size + object.ground.size
-
     for game_object in game_world.all_objects():
         game_object.update()
 

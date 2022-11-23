@@ -24,5 +24,5 @@ class FarJump:
         if group == 'p:fj':
             game_world.remove_object(self)
 
-    def handle_collision_bottom(self, other, group, dir):
+    def handle_collision_dir(self, other, group, dir):
         pass

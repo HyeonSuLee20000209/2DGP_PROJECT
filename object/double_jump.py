@@ -24,5 +24,5 @@ class DoubleJump:
         if group == 'p:dj':
             game_world.remove_object(self)
 
-    def handle_collision_bottom(self, other, group, dir):
+    def handle_collision_dir(self, other, group, dir):
         pass
