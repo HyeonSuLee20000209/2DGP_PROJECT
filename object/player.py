@@ -3,6 +3,8 @@ import game_framework
 import game_world
 import play_state
 
+import object.ground
+
 
 PIXEL_PER_METER = 10.0 / 0.3
 RUN_SPEED_KMPH = 30.0
@@ -213,9 +215,6 @@ class Player:
         play_state.reset()
 
     def handle_collision(self, other, group):
-        global max_height
-        max_height = 75
-
         if group == 'p:ground':
             if self.is_fj is True:
                 self.x -= self.f_dir * 400 * game_framework.frame_time
@@ -232,5 +231,23 @@ class Player:
         elif group == 'p:fj':
             self.item = fj
             self.image = pico2d.load_image('resource/FPlayer.png')
+        elif group == 'p:jb':
+            pass
         elif group == 'p:star':
             pass
+
+    def handle_collision_dir(self, other, group, dir):
+        global max_height
+
+        top, bottom, right, left = range(4)
+
+        self.crash_check = True
+        self.y = other.y + size + object.ground.size
+        self.origin_y = other.y + size + object.ground.size
+
+        if dir == bottom:
+            if group == 'p:ground':
+                max_height = 75
+            elif group == 'p:jb':
+                max_height = 150
+                pass

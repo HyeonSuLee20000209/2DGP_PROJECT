@@ -21,3 +21,6 @@ class JumpBlock:
 
     def handle_collision(self, other, group):
         pass
+
+    def handle_collision_bottom(self, other, group):
+        pass

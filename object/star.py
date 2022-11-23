@@ -29,3 +29,6 @@ class Star:
             play_state.exit()
             play_state.stage += 1
             play_state.enter()
+
+    def handle_collision_bottom(self, other, group):
+        pass
