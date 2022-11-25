@@ -16,8 +16,10 @@ def exit():
     global image
     del image
 
-
+count = 0
 def handle_events():
+    global image, count
+
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -30,6 +32,17 @@ def handle_events():
                     game_framework.quit()
                 case pico2d.SDLK_SPACE:
                     game_framework.change_state(play_state)
+        elif event.type == SDL_MOUSEBUTTONDOWN:
+            # 게임 시작
+            if event.button == 1:
+                if 0 < event.x < 110 * 1000 // image.w:
+                    pass
+                    # if 52 * 600 // image.h < event.y < 82 * 600 // image.h:
+                    #     print('d')
+                    #     game_framework.change_state(play_state)
+                    # elif 96 * 600 // image.h < event.y < 126 * 600 // image.h:
+                    #     game_framework.change_state(play_state)
+
 
 
 def draw():

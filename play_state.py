@@ -210,12 +210,12 @@ def stage1():
 
     game_world.add_collision_pairs(p, ground, 'p:ground')
 
-    global jblock
-    jblock.append(JumpBlock(25 + 50 * 7, 25 + 50 * 0))
+    global fj
+    fj.append(FarJump(25 + 50 * 7, 25 + 50 * 2))
 
-    game_world.add_all_objects(jblock, 3)
+    game_world.add_all_objects(fj, 3)
 
-    game_world.add_collision_pairs(p, jblock, 'p:jb')
+    game_world.add_collision_pairs(p, fj, 'p:fj')
 
 
 def stage2():
