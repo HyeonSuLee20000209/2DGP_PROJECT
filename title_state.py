@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import play_state
+import select_state
 
 
 image = True
@@ -56,7 +57,7 @@ def handle_events():
             if 0 < event.x < 109 * 1000 // image.w:
                 if 67 * 600 // image.h < event.y < 99 * 600 // image.h:
                     if event.button == 1:
-                        game_framework.change_state(play_state)
+                        game_framework.change_state(select_state)
                 elif 112 * 600 // image.h < event.y < 142 * 600 // image.h:
                     if event.button == 1:
                         game_framework.quit()
