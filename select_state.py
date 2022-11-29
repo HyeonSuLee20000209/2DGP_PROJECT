@@ -3,14 +3,15 @@ from pico2d import *
 
 import game_framework
 import play_state
+import title_state
 
 image = None
 
 
 def enter():
     global image
-    if image is None:
-        image = load_image('resource/StageSelect.png')
+    # if image is None:
+    image = load_image('resource/StageSelect.png')
 
 
 def exit():
@@ -26,7 +27,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN:
             match event.key:
                 case pico2d.SDLK_ESCAPE:
-                    game_framework.quit()
+                    game_framework.change_state(title_state)
                 case pico2d.SDLK_q:
                     game_framework.quit()
                 case pico2d.SDLK_SPACE:
