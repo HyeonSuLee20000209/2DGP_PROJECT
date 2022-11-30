@@ -5,6 +5,8 @@ import game_framework
 import play_state
 import title_state
 
+import server
+
 image = None
 
 
@@ -32,6 +34,22 @@ def handle_events():
                     game_framework.quit()
                 case pico2d.SDLK_SPACE:
                     game_framework.change_state(play_state)
+        elif event.type == SDL_MOUSEBUTTONDOWN:
+            if event.button == 1:
+                print(event.x, event.y)
+
+                if 130 < event.y < 225:
+                    if 50 < event.x < 145:
+                        server.stage = 1
+                        game_framework.change_state(play_state)
+                if 260 < event.y < 355:
+                    if 50 < event.x < 145:
+                        server.stage = 8
+                        game_framework.change_state(play_state)
+                if 390 < event.y < 485:
+                    if 50 < event.x < 145:
+                        server.stage = 15
+                        game_framework.change_state(play_state)
 
 
 def draw():
@@ -51,4 +69,3 @@ def pause():
 
 def resume():
     pass
-

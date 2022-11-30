@@ -68,13 +68,14 @@ def handle_events():
             else:
                 c_color, e_color = white, white
         if event.type == SDL_MOUSEBUTTONDOWN:
-            if 200 < event.x < 800:
-                if 100 < event.y < 250:
-                    game_framework.pop_state()
-                elif 350 < event.y < 500:
-                    game_framework.pop_state()
-                    game_framework.change_state(select_state)
+            if event.button == 1:
+                if 200 < event.x < 800:
+                    if 100 < event.y < 250:
+                        game_framework.pop_state()
+                    elif 350 < event.y < 500:
+                        game_framework.pop_state()
+                        game_framework.change_state(select_state)
+                    else:
+                        game_framework.pop_state()
                 else:
                     game_framework.pop_state()
-            else:
-                game_framework.pop_state()

@@ -53,13 +53,13 @@ def handle_events():
                     start_color, finish_color = 0, 0
             else:
                 start_color, finish_color = 0, 0
-        if event.type == SDL_MOUSEBUTTONDOWN:
-            if 0 < event.x < 109 * 1000 // image.w:
-                if 67 * 600 // image.h < event.y < 99 * 600 // image.h:
-                    if event.button == 1:
+        elif event.type == SDL_MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if 0 < event.x < 109 * 1000 // image.w:
+                    if 67 * 600 // image.h < event.y < 99 * 600 // image.h:
                         game_framework.change_state(select_state)
-                elif 112 * 600 // image.h < event.y < 142 * 600 // image.h:
-                    if event.button == 1:
+                        start_color, finish_color = 0, 0
+                    elif 112 * 600 // image.h < event.y < 142 * 600 // image.h:
                         game_framework.quit()
 
 
