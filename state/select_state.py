@@ -6,11 +6,14 @@ import state.play_state
 import state.title_state
 
 import server
+import stage
 
 image = None
 clear = None
 
 top = [130, 260, 390]
+top_reverse = [390, 260, 130]
+
 bottom = [225, 355, 485]
 left = [50, 180, 310, 440, 570, 700, 830]
 right = [150, 280, 410, 540, 670, 800, 930]
@@ -21,6 +24,7 @@ def enter():
     # if image is None:
     image = load_image('resource/StageSelect.png')
     clear = load_font('resource/ENCR10B.TTF', 30)
+
 
 def exit():
     global image
@@ -46,7 +50,7 @@ def handle_events():
                     if top[y] < event.y < bottom[y]:
                         for x in range(len(left)):
                             if left[x] < event.x < right[x]:
-                                server.stage = x + 1 + len(left) * y
+                                server.stage = x + len(left) * y
                                 game_framework.change_state(state.play_state)
 
 
@@ -56,7 +60,9 @@ def draw():
     image.draw(500, 300, 1000, 600)
     for y in range(len(top)):
         for x in range(len(left)):
-            clear.draw(left[x] + 5, top[y], 'Clear', (255, 255, 255))
+            if stage.s[x + len(left) * y] is True:
+                clear.draw(left[x] + 5, top_reverse[y], 'Clear', (255, 255, 255))
+
     
     update_canvas()
 

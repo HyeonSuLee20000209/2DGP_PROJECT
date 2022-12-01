@@ -71,11 +71,14 @@ def handle_events():
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == 1:
                 if 200 < event.x < 800:
+                    # continue
                     if 100 < event.y < 250:
                         game_framework.pop_state()
+                    # exit
                     elif 350 < event.y < 500:
                         game_framework.pop_state()
                         game_framework.change_state(state.select_state)
+                    # 빈 화면
                     else:
                         game_framework.pop_state()
                 else:

@@ -71,13 +71,13 @@ def collide_dir(a, b):
 
 
 def enter():
-    global stage, start
-    if server.stage == 1 or 5 or 8:
+    global start
+    if server.stage == 0:
         start = [object.ground.size + object.ground.size * 2 * 3,
                  object.ground.size + object.ground.size * 2 * 3]
-    elif server.stage == 2:
-        start = [object.ground.size * 2 * 0,
-                 object.ground.size * 2 * 2]
+    elif server.stage == 1:
+        start = [object.ground.size + object.ground.size * 2 * 0,
+                 object.ground.size + object.ground.size * 2 * 2]
 
     server.p = Player(start[0], start[1])
     game_world.add_object(server.p, 1)
@@ -89,6 +89,7 @@ def enter():
 
 
 def exit():
+    server.clear()
     game_world.clear()
 
 
@@ -103,7 +104,7 @@ def update():
         if collide(a, b) and b.exist:
             a.handle_collision(b, group)
             b.handle_collision(a, group)
-        if collide_dir(a, b):
+        if collide_dir(a, b) and b.exist:
             check, dir = collide_dir(a, b)
             a.handle_collision_dir(b, group, dir)
             b.handle_collision_dir(a, group, dir)

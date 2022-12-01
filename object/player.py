@@ -222,6 +222,10 @@ class Player:
             if self.is_fj is True:
                 self.x -= self.f_dir * 400 * game_framework.frame_time
                 self.is_fj = False
+        elif group == 'p:bb':
+            if self.is_fj is True:
+                self.x -= self.f_dir * 400 * game_framework.frame_time
+                self.is_fj = False
         elif group == 'p:e_trap':
             self.die()
             self.item = None
@@ -258,10 +262,18 @@ class Player:
                 self.crash_check = True
                 self.y = other.y + size + object.ground.size
                 self.origin_y = other.y + size + object.ground.size
-                pass
+            elif group == 'p:bb':
+                max_height = 75
+                self.crash_check = True
+                self.y = other.y + size + object.ground.size
+                self.origin_y = other.y + size + object.ground.size
         elif dir == right:
             if group == 'p:ground':
                 self.x = other.x - size - object.ground.size
+            elif group == 'p:bb':
+                self.x = other.x - size - object.ground.size
         elif dir == left:
             if group == 'p:ground':
+                self.x = other.x + size + object.ground.size
+            elif group == 'p:bb':
                 self.x = other.x + size + object.ground.size
