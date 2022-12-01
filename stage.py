@@ -13,6 +13,9 @@ import game_world
 import server
 
 
+s = [False for x in range(21)]
+
+
 def stage(num):
     if num == 1:
         for i in range(4):

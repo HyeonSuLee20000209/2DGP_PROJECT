@@ -1,9 +1,9 @@
 import pico2d
 import game_framework
 
-import select_state
-import play_state
+import state.select_state
+import state.play_state
 
 pico2d.open_canvas(1000, 600)
-game_framework.run(select_state)
+game_framework.run(state.select_state)
 pico2d.close_canvas()

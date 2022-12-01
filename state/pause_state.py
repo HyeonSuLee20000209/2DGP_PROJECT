@@ -1,8 +1,8 @@
 from pico2d import *
 
 import game_framework
-import play_state
-import select_state
+import state.play_state
+import state.select_state
 
 c = None
 e = None
@@ -31,7 +31,7 @@ def update():
 def draw():
     global c, e
     clear_canvas()
-    play_state.draw_world()
+    state.play_state.draw_world()
     if c_color is white:
         c = load_image('resource/White_Continue.png')
     else:
@@ -75,7 +75,7 @@ def handle_events():
                         game_framework.pop_state()
                     elif 350 < event.y < 500:
                         game_framework.pop_state()
-                        game_framework.change_state(select_state)
+                        game_framework.change_state(state.select_state)
                     else:
                         game_framework.pop_state()
                 else:

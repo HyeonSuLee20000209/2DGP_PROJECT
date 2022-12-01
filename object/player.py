@@ -1,7 +1,7 @@
 import pico2d
 import game_framework
 import game_world
-import play_state
+import state.play_state
 
 import object.ground
 
@@ -215,7 +215,7 @@ class Player:
         self.item = None
         self.is_fj = False
         self.image = pico2d.load_image('resource/Player.png')
-        play_state.reset()
+        state.play_state.reset()
 
     def handle_collision(self, other, group):
         if group == 'p:ground':

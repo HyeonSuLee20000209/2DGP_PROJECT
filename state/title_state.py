@@ -1,8 +1,8 @@
 from pico2d import *
 
 import game_framework
-import play_state
-import select_state
+import state.play_state
+import state.select_state
 
 
 image = True
@@ -42,7 +42,7 @@ def handle_events():
                 case pico2d.SDLK_q:
                     game_framework.quit()
                 case pico2d.SDLK_SPACE:
-                    game_framework.change_state(play_state)
+                    game_framework.change_state(state.play_state)
         elif event.type == SDL_MOUSEMOTION:
             if 0 < event.x < 109 * 1000 // image.w:
                 if 67 * 600 // image.h < event.y < 99 * 600 // image.h:
@@ -57,7 +57,7 @@ def handle_events():
             if event.button == 1:
                 if 0 < event.x < 109 * 1000 // image.w:
                     if 67 * 600 // image.h < event.y < 99 * 600 // image.h:
-                        game_framework.change_state(select_state)
+                        game_framework.change_state(state.select_state)
                         start_color, finish_color = 0, 0
                     elif 112 * 600 // image.h < event.y < 142 * 600 // image.h:
                         game_framework.quit()

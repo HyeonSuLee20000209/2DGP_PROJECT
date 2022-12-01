@@ -1,7 +1,9 @@
 import pico2d
 import game_world
 import game_framework
-import select_state
+import state.select_state
+import server
+import stage
 
 
 class Star:
@@ -26,7 +28,8 @@ class Star:
     def handle_collision(self, other, group):
         if group == 'p:star':
             self.exist = False
-            game_framework.change_state(select_state)
+            stage.s[server.stage] = True
+            game_framework.change_state(state.select_state)
 
     def handle_collision_dir(self, other, group, dir):
         pass

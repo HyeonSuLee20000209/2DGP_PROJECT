@@ -1,7 +1,7 @@
 from pico2d import *
 
 import game_framework
-import title_state
+import state.title_state
 
 running = True
 image = True
@@ -25,7 +25,7 @@ def update():
     # global running
     if logo_time > 2.0:
         logo_time = 0
-        game_framework.change_state(title_state)
+        game_framework.change_state(state.title_state)
     delay(0.01)
     logo_time += 0.01
 
