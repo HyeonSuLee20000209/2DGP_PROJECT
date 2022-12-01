@@ -7,6 +7,7 @@ class Ground:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
+        self.exist = True
 
         if Ground.image is None:
             Ground.image = pico2d.load_image('resource/Ground.png')

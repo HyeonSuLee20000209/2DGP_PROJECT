@@ -3,6 +3,7 @@ import pico2d
 
 class Background:
     image = None
+    exist = True
 
     def __init__(self):
         if Background.image is None:

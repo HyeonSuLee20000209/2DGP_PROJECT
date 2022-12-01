@@ -15,12 +15,8 @@ import server
 
 def stage(num):
     if num == 1:
-        for i in range(6):
+        for i in range(4):
             server.ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
-            # server.ground.append(Ground(25 + 50 * (i + 1), 25 + 50 * 2))
-            # server.ground.append(Ground(25 + 50 * 5, 25 + 50 * i))
-            # server.ground.append(Ground(25 + 50 * 1, 25 + 50 * i))
-            # server.ground.append(Ground(25 + 50 * (i + i + i + 1), 25 + 50 * 1))
         game_world.add_all_objects(server.ground, 2)
         game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
 
@@ -28,19 +24,23 @@ def stage(num):
         game_world.add_all_objects(server.fj, 3)
         game_world.add_collision_pairs(server.p, server.fj, 'p:fj')
     elif num == 8:
-        for i in range(8):
-            server.ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
-            game_world.add_all_objects(server.ground, 2)
-            game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
-    elif num == 15:
         for i in range(5):
             server.ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
-            game_world.add_all_objects(server.ground, 2)
-            game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
+        game_world.add_all_objects(server.ground, 2)
+        game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
 
-        server.dj.append(DoubleJump(25 + 50 * 7, 25 + 50 * 2))
-        game_world.add_all_objects(server.dj, 3)
-        game_world.add_collision_pairs(server.p, server.dj, 'p:dj')
+        server.fj.append(FarJump(25 + 50 * 7, 25 + 50 * 2))
+        game_world.add_all_objects(server.fj, 3)
+        game_world.add_collision_pairs(server.p, server.fj, 'p:fj')
+    elif num == 15:
+        for i in range(6):
+            server.ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
+        game_world.add_all_objects(server.ground, 2)
+        game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
+
+        server.fj.append(FarJump(25 + 50 * 7, 25 + 50 * 2))
+        game_world.add_all_objects(server.fj, 3)
+        game_world.add_collision_pairs(server.p, server.fj, 'p:fj')
 
 
 def stage2():

@@ -6,6 +6,7 @@ class JumpBlock:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
+        self.exist = True
 
         if JumpBlock.image is None:
             JumpBlock.image = pico2d.load_image('resource/JumpBlock.png')

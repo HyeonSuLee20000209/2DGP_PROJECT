@@ -1,8 +1,7 @@
 import pico2d
 import game_world
 import game_framework
-import title_state
-import play_state
+import select_state
 
 
 class Star:
@@ -10,6 +9,7 @@ class Star:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
+        self.exist = True
 
         if Star.image is None:
             Star.image = pico2d.load_image('resource/Star.png')
@@ -25,10 +25,8 @@ class Star:
 
     def handle_collision(self, other, group):
         if group == 'p:star':
-            game_world.remove_object(self)
-            play_state.exit()
-            play_state.stage += 1
-            play_state.enter()
+            self.exist = False
+            game_framework.change_state(select_state)
 
     def handle_collision_dir(self, other, group, dir):
         pass

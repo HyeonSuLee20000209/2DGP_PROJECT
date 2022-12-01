@@ -72,7 +72,7 @@ def collide_dir(a, b):
 
 def enter():
     global stage, start
-    if server.stage == 1:
+    if server.stage == 1 or 5 or 8:
         start = [object.ground.size + object.ground.size * 2 * 3,
                  object.ground.size + object.ground.size * 2 * 3]
     elif server.stage == 2:
@@ -100,7 +100,7 @@ def update():
         game_object.update()
 
     for a, b, group in game_world.all_collision_pairs():
-        if collide(a, b):
+        if collide(a, b) and b.exist:
             a.handle_collision(b, group)
             b.handle_collision(a, group)
         if collide_dir(a, b):
@@ -117,7 +117,8 @@ def draw():
 
 def draw_world():
     for game_object in game_world.all_objects():
-        game_object.draw()
+        if game_object.exist:
+            game_object.draw()
 
 
 def pause():
@@ -129,6 +130,8 @@ def resume():
 
 
 def reset():
-    exit()
-    enter()
+    server.p.set_location(start[0], start[1])
     server.p.is_revival = True
+    for game_object in game_world.all_objects():
+        if not game_object.exist:
+            game_object.exist = True

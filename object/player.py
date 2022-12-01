@@ -113,6 +113,7 @@ class Player:
             self.image = pico2d.load_image('resource/Player.png')
 
         self.x, self.y = x, y
+        self.exist = True
 
         self.dir = 0
         self.velocity = 0
@@ -134,6 +135,9 @@ class Player:
         self.is_revival = False
 
         self.origin_y = y
+
+    def set_location(self, x, y):
+        self.x, self.y = x, y
 
     def update(self):
         self.cur_state.do(self)
@@ -208,7 +212,6 @@ class Player:
         self.x, self.y = x, y
 
     def die(self):
-        self.x, self.y = play_state.start[0], play_state.start[1]
         self.item = None
         self.is_fj = False
         self.image = pico2d.load_image('resource/Player.png')
@@ -240,20 +243,25 @@ class Player:
         global max_height
 
         if dir == top:
-            self.crash_check = False
-            self.y = other.y - size - object.ground.size
+            if group == 'p:ground':
+                self.crash_check = False
+                self.y = other.y - size - object.ground.size
 
         elif dir == bottom:
-            self.crash_check = True
-            self.y = other.y + size + object.ground.size
-            self.origin_y = other.y + size + object.ground.size
-
             if group == 'p:ground':
                 max_height = 75
+                self.crash_check = True
+                self.y = other.y + size + object.ground.size
+                self.origin_y = other.y + size + object.ground.size
             elif group == 'p:jb':
                 max_height = 125
+                self.crash_check = True
+                self.y = other.y + size + object.ground.size
+                self.origin_y = other.y + size + object.ground.size
                 pass
         elif dir == right:
-            self.x = other.x - size - object.ground.size
+            if group == 'p:ground':
+                self.x = other.x - size - object.ground.size
         elif dir == left:
-            self.x = other.x + size + object.ground.size
+            if group == 'p:ground':
+                self.x = other.x + size + object.ground.size

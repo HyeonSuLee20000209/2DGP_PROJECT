@@ -6,6 +6,7 @@ class Spike:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
+        self.exist = True
 
         if Spike.image is None:
             Spike.image = pico2d.load_image('resource/Spike.png')

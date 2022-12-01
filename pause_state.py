@@ -12,6 +12,7 @@ white, gray = range(2)
 c_color = white
 e_color = white
 
+
 def enter():
     global c, e
     c = load_image('resource/White_Continue.png')

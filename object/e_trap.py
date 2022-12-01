@@ -6,6 +6,7 @@ class ETrap:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
+        self.exist = True
 
         if ETrap.image is None:
             ETrap.image = pico2d.load_image('resource/ElectronicTrap.png')
