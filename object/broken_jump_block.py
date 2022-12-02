@@ -4,15 +4,15 @@ import game_world
 top, bottom, right, left = range(4)
 
 
-class BrokenBlock:
+class BrokenJumpBlock:
     image = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
         self.exist = True
 
-        if BrokenBlock.image is None:
-            BrokenBlock.image = pico2d.load_image('resource/BrokenBlock.png')
+        if BrokenJumpBlock.image is None:
+            BrokenJumpBlock.image = pico2d.load_image('resource/BrokenJumpBlock.png')
 
     def draw(self):
         self.image.draw(self.x, self.y, 50, 50)
@@ -28,5 +28,5 @@ class BrokenBlock:
 
     def handle_collision_dir(self, other, group, dir):
         if dir == bottom:
-            if group == 'p:bb':
+            if group == 'p:bjb':
                 self.exist = False

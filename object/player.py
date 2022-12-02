@@ -267,6 +267,11 @@ class Player:
                 self.crash_check = True
                 self.y = other.y + size + object.ground.size
                 self.origin_y = other.y + size + object.ground.size
+            elif group == 'p:bjb':
+                max_height = 125
+                self.crash_check = True
+                self.y = other.y + size + object.ground.size
+                self.origin_y = other.y + size + object.ground.size
         elif dir == right:
             if group == 'p:ground':
                 self.x = other.x - size - object.ground.size

@@ -9,6 +9,7 @@ from object.far_jump import FarJump
 from object.star import Star
 from object.jump_block import JumpBlock
 from object.broken_block import BrokenBlock
+from object.broken_jump_block import BrokenJumpBlock
 
 import game_world
 import server
@@ -25,9 +26,9 @@ def stage(num):
         # game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
 
         for i in range(6):
-            server.broken_block.append(BrokenBlock(25 + 50 * i, 25 + 50 * 0))
-        game_world.add_all_objects(server.broken_block, 2)
-        game_world.add_collision_pairs(server.p, server.broken_block, 'p:bb')
+            server.broken_jump_block.append(BrokenJumpBlock(25 + 50 * i, 25 + 50 * 0))
+        game_world.add_all_objects(server.broken_jump_block, 2)
+        game_world.add_collision_pairs(server.p, server.broken_jump_block, 'p:bjb')
 
         server.star.append(Star(25 + 50 * 7, 25 + 50 * 2))
         game_world.add_all_objects(server.star, 4)
