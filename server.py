@@ -13,6 +13,8 @@ fj = []
 jump_block = []
 star = []
 star_count = 0
+monster1 = []
+monster2 = []
 
 
 def clear():
@@ -22,8 +24,8 @@ def clear():
     global bg
     bg = None
 
-    global ground, broken_block, e_trap, spike
-    ground, broken_block, e_trap, spike = [], [], [], []
+    global ground, broken_block, e_trap, spike, monster1, monster2
+    ground, broken_block, e_trap, spike, monster1, monster2 = [], [], [], [], [], []
 
     global dj, fj, jump_block, broken_jump_block
     dj, fj, jump_block, broken_jump_block = [], [], [], []
@@ -36,4 +38,3 @@ def clear():
 
     global star_count
     star_count = 0
-

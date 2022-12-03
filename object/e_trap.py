@@ -18,7 +18,7 @@ class ETrap:
         pass
 
     def get_bb(self):
-        return self.x - 20, self.y - 20, self.x + 20, self.y + 20
+        return self.x - 18, self.y - 18, self.x + 18, self.y + 18
 
     def handle_collision(self, other, group):
         pass

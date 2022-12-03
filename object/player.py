@@ -114,7 +114,7 @@ class Player:
             Player.image = pico2d.load_image('resource/Player.png')
         if Player.sound is None:
             Player.sound = pico2d.load_wav('resource/bounce_sound.wav')
-            Player.sound.set_volume(32)
+            Player.sound.set_volume(20)
         self.x, self.y = x, y
         self.exist = True
 
@@ -211,7 +211,7 @@ class Player:
     def gravity(self):
         self.y -= RUN_SPEED_PPS * game_framework.frame_time * self.accel
         if not self.is_fj:
-            self.accel = 1 + 0.02 * self.accel_count
+            self.accel = 1 + 0.01 * self.accel_count
             self.accel_count += 1
         self.frame = 3
 
@@ -255,6 +255,12 @@ class Player:
             pass
         elif group == 'p:star':
             pass
+        elif group == 'p:m1':
+            self.die()
+            self.item = None
+        elif group == 'p:m2':
+            self.die()
+            self.item = None
 
     def handle_collision_dir(self, other, group, dir):
         global max_height
@@ -269,19 +275,19 @@ class Player:
                 self.origin_y = other.y + size + object.ground.size
 
             if group == 'p:ground':
-                Player.sound.play()
+                Player.sound.play(1)
                 max_height = 70
                 self.crash_check = True
             elif group == 'p:jb':
-                Player.sound.play()
+                Player.sound.play(1)
                 max_height = 160
                 self.crash_check = True
             elif group == 'p:bb':
-                Player.sound.play()
+                Player.sound.play(1)
                 max_height = 70
                 self.crash_check = True
             elif group == 'p:bjb':
-                Player.sound.play()
+                Player.sound.play(1)
                 max_height = 160
                 self.crash_check = True
         elif dir == right:

@@ -78,11 +78,11 @@ def enter():
         start = [object.ground.size + object.ground.size * 2 * 0,
                  object.ground.size + object.ground.size * 2 * 4]
     elif server.stage == 2:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 18,
+                 object.ground.size + object.ground.size * 2 * 11]
     elif server.stage == 3:
         start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+                 object.ground.size + object.ground.size * 2 * 10]
     elif server.stage == 4:
         start = [object.ground.size + object.ground.size * 2 * 0,
                  object.ground.size + object.ground.size * 2 * 4]
@@ -139,12 +139,15 @@ def enter():
     game_world.add_object(server.p, 1)
 
     server.bg = Background()
+    server.bg.bgm.repeat_play()
+
     game_world.add_object(server.bg, 0)
 
     stage.stage(server.stage)
 
 
 def exit():
+    server.bg.bgm.stop()
     server.clear()
     game_world.clear()
 

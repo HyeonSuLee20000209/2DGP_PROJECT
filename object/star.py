@@ -17,8 +17,8 @@ class Star:
         if Star.image is None:
             Star.image = pico2d.load_image('resource/Star.png')
         if Star.eat_sound is None:
-            Star.eat_sound = load_wav('resource/collect_star.wav')
-            Star.eat_sound.set_volume(32)
+            Star.eat_sound = pico2d.load_wav('resource/collect_star.wav')
+            Star.eat_sound.set_volume(10)
 
     def draw(self):
         self.image.draw(self.x, self.y, 40, 40)
@@ -32,7 +32,7 @@ class Star:
     def handle_collision(self, other, group):
         if group == 'p:star':
             self.exist = False
-            Star.eat_sound.play()
+            Star.eat_sound.play(1)
             server.star_count -= 1
             if server.star_count == 0:
                 stage.s[server.stage] = True
