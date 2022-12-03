@@ -20,23 +20,72 @@ s = [False for x in range(21)]
 
 def stage(num):
     if num == 0:
-        # for i in range(6):
-        #     server.ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
-        # game_world.add_all_objects(server.ground, 2)
-        # game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
+        server.ground.append(Ground(25 + 50 * 2, 25 + 50 * 4))
+        server.ground.append(Ground(25 + 50 * 3, 25 + 50 * 3))
+        server.ground.append(Ground(25 + 50 * 16, 25 + 50 * 3))
+        server.ground.append(Ground(25 + 50 * 17, 25 + 50 * 4))
+        for i in range(4):
+            server.ground.append(Ground(25 + 50 * 1, 25 + 50 * (5 + i)))
+            server.ground.append(Ground(25 + 50 * 18, 25 + 50 * (5 + i)))
+        for i in range(12):
+            server.ground.append(Ground(25 + 50 * (4 + i), 25 + 50 * 2))
+            server.star.append(Star(25 + 50 * (4 + i), 25 + 50 * 3))
+            server.star.append(Star(25 + 50 * (4 + i), 25 + 50 * 4))
 
-        for i in range(6):
-            server.broken_jump_block.append(BrokenJumpBlock(25 + 50 * i, 25 + 50 * 0))
-        game_world.add_all_objects(server.broken_jump_block, 2)
-        game_world.add_collision_pairs(server.p, server.broken_jump_block, 'p:bjb')
+        game_world.add_all_objects(server.ground, 2)
+        game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
 
-        server.star.append(Star(25 + 50 * 7, 25 + 50 * 2))
         game_world.add_all_objects(server.star, 4)
         game_world.add_collision_pairs(server.p, server.star, 'p:star')
+
     elif num == 1:
-        pass
+        for i in range(5):
+            server.ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
+        server.ground.append(Ground(25 + 50 * 2, 25 + 50 * 1))
+        server.ground.append(Ground(25 + 50 * 15, 25 + 50 * 0))
+        server.ground.append(Ground(25 + 50 * 19, 25 + 50 * 1))
+        server.ground.append(Ground(25 + 50 * 12, 25 + 50 * 7))
+        game_world.add_all_objects(server.ground, 2)
+        game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
+
+        server.spike.append(Spike(25 + 50 * 3, 25 + 50 * 1))
+        game_world.add_all_objects(server.spike, 2)
+        game_world.add_collision_pairs(server.p, server.spike, 'p:spike')
+
+        server.jump_block.append(JumpBlock(25 + 50 * 7, 25 + 50 * 0))
+        game_world.add_all_objects(server.jump_block, 3)
+        game_world.add_collision_pairs(server.p, server.jump_block, 'p:jb')
+
+        server.broken_jump_block.append(BrokenJumpBlock(25 + 50 * 10, 25 + 50 * 0))
+        game_world.add_all_objects(server.broken_jump_block, 3)
+        game_world.add_collision_pairs(server.p, server.broken_jump_block, 'p:bjb')
+
+        server.fj.append(FarJump(25 + 50 * 12, 25 + 50 * 9))
+        game_world.add_all_objects(server.fj, 3)
+        game_world.add_collision_pairs(server.p, server.fj, 'p:fj')
+
+        for i in range(3):
+            server.e_trap.append(ETrap(25 + 50 * 8, 25 + 50 * i))
+        game_world.add_all_objects(server.e_trap, 2)
+        game_world.add_collision_pairs(server.p, server.e_trap, 'p:e_trap')
+
+        server.broken_block.append(BrokenBlock(25 + 50 * 18, 25 + 50 * 0))
+        for i in range(4):
+            server.broken_block.append(BrokenBlock(25 + 50 * (16 - i), 25 + 50 * (3 + i)))
+        game_world.add_all_objects(server.broken_block, 3)
+        game_world.add_collision_pairs(server.p, server.broken_block, 'p:bb')
+
+        server.dj.append(DoubleJump(25 + 50 * 19, 25 + 50 * 2))
+        game_world.add_all_objects(server.dj, 3)
+        game_world.add_collision_pairs(server.p, server.dj, 'p:dj')
+
+        server.star.append(Star(25 + 50 * 3, 25 + 50 * 5))
+        game_world.add_all_objects(server.star, 4)
+        game_world.add_collision_pairs(server.p, server.star, 'p:star')
     elif num == 2:
-        pass
+        server.star.append(Star(25 + 50 * 5, 25 + 50 * 3))
+        game_world.add_all_objects(server.star, 4)
+        game_world.add_collision_pairs(server.p, server.star, 'p:star')
     elif num == 3:
         pass
     elif num == 4:
@@ -46,14 +95,10 @@ def stage(num):
     elif num == 6:
         pass
     elif num == 7:
-        for i in range(5):
-            server.ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
+        for i in range(10):
+            server.ground.append(Ground(25 + 50 * (i + 1), 25 + 50 * 0))
         game_world.add_all_objects(server.ground, 2)
         game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
-
-        server.fj.append(FarJump(25 + 50 * 7, 25 + 50 * 2))
-        game_world.add_all_objects(server.fj, 3)
-        game_world.add_collision_pairs(server.p, server.fj, 'p:fj')
     elif num == 8:
         pass
     elif num == 9:
@@ -65,7 +110,47 @@ def stage(num):
     elif num == 12:
         pass
     elif num == 13:
-        pass
+        server.ground.append(Ground(25 + 50 * 2, 25 + 50 * 9))
+        server.ground.append(Ground(25 + 50 * 1, 25 + 50 * 6))
+        server.ground.append(Ground(25 + 50 * 3, 25 + 50 * 3))
+        server.ground.append(Ground(25 + 50 * 1, 25 + 50 * 0))
+        server.ground.append(Ground(25 + 50 * 10, 25 + 50 * 9))
+        server.ground.append(Ground(25 + 50 * 17, 25 + 50 * 9))
+        game_world.add_all_objects(server.ground, 2)
+        game_world.add_collision_pairs(server.p, server.ground, 'p:ground')
+
+        for i in range(3):
+            server.e_trap.append(ETrap(25 + 50 * 2, 25 + 50 * i * 3))
+            server.e_trap.append(ETrap(25 + 50 * 10, 25 + 50 * i * 3))
+            server.e_trap.append(ETrap(25 + 50 * 17, 25 + 50 * i * 3))
+        game_world.add_all_objects(server.e_trap, 2)
+        game_world.add_collision_pairs(server.p, server.e_trap, 'p:e_trap')
+
+        server.dj.append(DoubleJump(25 + 50 * 18, 25 + 50 * 1))
+        server.dj.append(DoubleJump(25 + 50 * 16, 25 + 50 * 4))
+        server.dj.append(DoubleJump(25 + 50 * 18, 25 + 50 * 7))
+        game_world.add_all_objects(server.dj, 3)
+        game_world.add_collision_pairs(server.p, server.dj, 'p:dj')
+
+        server.broken_block.append(BrokenBlock(25 + 50 * 9, 25 + 50 * 6))
+        server.broken_block.append(BrokenBlock(25 + 50 * 11, 25 + 50 * 3))
+        server.broken_block.append(BrokenBlock(25 + 50 * 9, 25 + 50 * 0))
+        game_world.add_all_objects(server.broken_block, 3)
+        game_world.add_collision_pairs(server.p, server.broken_block, 'p:bb')
+
+        for i in range(3):
+            server.broken_jump_block.append(BrokenJumpBlock(25 + 50 * (4 + i), 25 + 50 * i * 3))
+            server.broken_jump_block.append(BrokenJumpBlock(25 + 50 * (12 + i), 25 + 50 * i * 3))
+        game_world.add_all_objects(server.broken_jump_block, 3)
+        game_world.add_collision_pairs(server.p, server.broken_jump_block, 'p:bjb')
+
+        for i in range(3):
+            server.star.append(Star(25 + 50 * 2, 25 + 50 * (1 + 3 * i)))
+            server.star.append(Star(25 + 50 * 10, 25 + 50 * (1 + 3 * i)))
+            server.star.append(Star(25 + 50 * 17, 25 + 50 * (1 + 3 * i)))
+        server.star.append(Star(25 + 50 * 10, 25 + 50 * 10))
+        game_world.add_all_objects(server.star, 4)
+        game_world.add_collision_pairs(server.p, server.star, 'p:star')
     elif num == 14:
         for i in range(6):
             server.ground.append(Ground(25 + 50 * i, 25 + 50 * 0))
@@ -88,31 +173,42 @@ def stage(num):
     elif num == 20:
         pass
 
+    server.star_count = len(server.star)
+
 
 def stage2():
-    # server.fj.append(FarJump(25 + 50 * 7, 25 + 50 * 2))
-    # game_world.add_all_objects(server.fj, 3)
-    # game_world.add_collision_pairs(server.p, server.fj, 'p:fj')
-    #
-    # global e_trap
-    # game_world.add_all_objects(e_trap, 2)
-    # game_world.add_collision_pairs(p, e_trap, 'p:e_trap')
-    #
-    # global spike
-    # game_world.add_all_objects(spike, 2)
-    # game_world.add_collision_pairs(p, spike, 'p:spike')
-    #
-    # global dj
-    # game_world.add_all_objects(dj, 3)
-    # game_world.add_collision_pairs(p, dj, 'p:dj')
-    #
-    # global fj
-    # game_world.add_all_objects(fj, 3)
-    # game_world.add_collision_pairs(p, fj, 'p:fj')
-    #
-    # global star
-    # game_world.add_all_objects(star, 4)
-    # game_world.add_collision_pairs(p, star, 'p:star')
+    server.fj.append(FarJump(25 + 50 * 7, 25 + 50 * 2))
+    game_world.add_all_objects(server.fj, 3)
+    game_world.add_collision_pairs(server.p, server.fj, 'p:fj')
 
-    pass
+    server.e_trap.append(ETrap())
+    game_world.add_all_objects(server.e_trap, 2)
+    game_world.add_collision_pairs(server.p, server.e_trap, 'p:e_trap')
 
+    server.spike.append(Spike())
+    game_world.add_all_objects(server.spike, 2)
+    game_world.add_collision_pairs(server.p, server.spike, 'p:spike')
+
+    server.dj.append(DoubleJump(25 + 50 * 10, 25 + 50 * 6))
+    game_world.add_all_objects(server.dj, 3)
+    game_world.add_collision_pairs(server.p, server.dj, 'p:dj')
+
+    server.fj.append(FarJump())
+    game_world.add_all_objects(server.fj, 3)
+    game_world.add_collision_pairs(server.p, server.fj, 'p:fj')
+
+    server.broken_block.append(BrokenBlock)
+    game_world.add_all_objects(server.broken_block, 3)
+    game_world.add_collision_pairs(server.p, server.broken_block, 'p:bb')
+
+    server.broken_jump_block.append(BrokenJumpBlock)
+    game_world.add_all_objects(server.broken_jump_block, 3)
+    game_world.add_collision_pairs(server.p, server.broken_jump_block, 'p:bjb')
+
+    server.jump_block.append(JumpBlock)
+    game_world.add_all_objects(server.jump_block, 3)
+    game_world.add_collision_pairs(server.p, server.broken_jump_block, 'p:jb')
+
+    server.star.append(Star(25 + 50 * 7, 25 + 50 * 2))
+    game_world.add_all_objects(server.star, 4)
+    game_world.add_collision_pairs(server.p, server.star, 'p:star')

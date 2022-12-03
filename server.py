@@ -12,6 +12,7 @@ dj = []
 fj = []
 jump_block = []
 star = []
+star_count = 0
 
 
 def clear():
@@ -32,3 +33,7 @@ def clear():
 
     global stage
     stage = 0
+
+    global star_count
+    star_count = 0
+

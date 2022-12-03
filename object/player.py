@@ -6,7 +6,7 @@ import state.play_state
 import object.ground
 
 
-PIXEL_PER_METER = 10.0 / 0.3
+PIXEL_PER_METER = 10.0 / 0.25
 RUN_SPEED_KMPH = 30.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -14,9 +14,9 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 15
 
-size = 20
+size = 15
 
 
 class IDLE:
@@ -37,12 +37,12 @@ class IDLE:
     def draw(player):
         if player.is_fj:
             if player.f_dir > 0:
-                player.image.clip_draw(int(player.frame) * 42, 42, 42, 42, player.x, player.y)
+                player.image.clip_draw(int(player.frame) * 42, 42, 42, 42, player.x, player.y, 30, 30)
             else:
                 player.image.clip_composite_draw(int(player.frame) * 42, 42, 42, 42,
-                                                 0, 'h', player.x, player.y, 40, 40)
+                                                 0, 'h', player.x, player.y, 30, 30)
         else:
-            player.image.clip_draw(player.frame * 42, 0, 42, 42, player.x, player.y)
+            player.image.clip_draw(player.frame * 42, 0, 42, 42, player.x, player.y, 30, 30)
 
 
 class RUN:
@@ -79,10 +79,10 @@ class RUN:
     @staticmethod
     def draw(player):
         if player.dir > 0:
-            player.image.clip_draw(int(player.frame) * 42, 42, 42, 42, player.x, player.y)
+            player.image.clip_draw(int(player.frame) * 42, 42, 42, 42, player.x, player.y, 30, 30)
         else:
             player.image.clip_composite_draw(int(player.frame) * 42, 42, 42, 42,
-                                             0, 'h', player.x, player.y, 40, 40)
+                                             0, 'h', player.x, player.y, 30, 30)
 
 
 LD, LU, RD, RU, DIE = range(5)
@@ -102,22 +102,27 @@ next_state = {
 }
 
 
-max_height = 75
+max_height = 70
 
 
 class Player:
     image = None
+    sound = None
 
     def __init__(self, x, y):
         if Player.image is None:
-            self.image = pico2d.load_image('resource/Player.png')
-
+            Player.image = pico2d.load_image('resource/Player.png')
+        if Player.sound is None:
+            Player.sound = pico2d.load_wav('resource/bounce_sound.wav')
+            Player.sound.set_volume(32)
         self.x, self.y = x, y
         self.exist = True
 
         self.dir = 0
         self.velocity = 0
         self.frame = 0
+        self.accel = 1
+        self.accel_count = 0
 
         self.crash_check = False
         self.crash_dir = None
@@ -172,16 +177,17 @@ class Player:
             self.is_fj = False
         if self.item is not None:
             if (event.type, event.key) == (pico2d.SDL_KEYDOWN, pico2d.SDLK_SPACE):
+                global max_height
+                self.accel = 1
+                self.accel_count = 0
                 if self.item == dj:
                     self.origin_y = self.y
                     self.is_fj = False
                     self.use_item()
                 elif self.velocity == 0:
                     if self.item == fj:
-                        global max_height
                         max_height = 20
                         self.origin_y = self.y
-
                         self.is_fj = True
                         self.use_item()
 
@@ -198,10 +204,15 @@ class Player:
             self.y = self.origin_y + max_height
             self.crash_check = False
         self.y += RUN_SPEED_PPS * game_framework.frame_time
+        self.accel = 1
+        self.accel_count = 0
         self.frame = 1
 
     def gravity(self):
-        self.y -= RUN_SPEED_PPS * game_framework.frame_time
+        self.y -= RUN_SPEED_PPS * game_framework.frame_time * self.accel
+        if not self.is_fj:
+            self.accel = 1 + 0.02 * self.accel_count
+            self.accel_count += 1
         self.frame = 3
 
     def f_jump(self):
@@ -212,6 +223,8 @@ class Player:
         self.x, self.y = x, y
 
     def die(self):
+        self.accel = 1
+        self.accel_count = 0
         self.item = None
         self.is_fj = False
         self.image = pico2d.load_image('resource/Player.png')
@@ -247,38 +260,37 @@ class Player:
         global max_height
 
         if dir == top:
-            if group == 'p:ground':
-                self.crash_check = False
-                self.y = other.y - size - object.ground.size
+            self.crash_check = False
+            self.y = other.y - size - object.ground.size
 
         elif dir == bottom:
-            if group == 'p:ground':
-                max_height = 75
-                self.crash_check = True
+            if not group == 'p:spike':
                 self.y = other.y + size + object.ground.size
                 self.origin_y = other.y + size + object.ground.size
+
+            if group == 'p:ground':
+                Player.sound.play()
+                max_height = 70
+                self.crash_check = True
             elif group == 'p:jb':
-                max_height = 125
+                Player.sound.play()
+                max_height = 160
                 self.crash_check = True
-                self.y = other.y + size + object.ground.size
-                self.origin_y = other.y + size + object.ground.size
             elif group == 'p:bb':
-                max_height = 75
+                Player.sound.play()
+                max_height = 70
                 self.crash_check = True
-                self.y = other.y + size + object.ground.size
-                self.origin_y = other.y + size + object.ground.size
             elif group == 'p:bjb':
-                max_height = 125
+                Player.sound.play()
+                max_height = 160
                 self.crash_check = True
-                self.y = other.y + size + object.ground.size
-                self.origin_y = other.y + size + object.ground.size
         elif dir == right:
-            if group == 'p:ground':
-                self.x = other.x - size - object.ground.size
-            elif group == 'p:bb':
-                self.x = other.x - size - object.ground.size
+            self.x = other.x - size - object.ground.size
+            # if group == 'p:ground':
+            # elif group == 'p:bb':
+            #     self.x = other.x - size - object.ground.size
         elif dir == left:
-            if group == 'p:ground':
-                self.x = other.x + size + object.ground.size
-            elif group == 'p:bb':
-                self.x = other.x + size + object.ground.size
+            self.x = other.x + size + object.ground.size
+            # if group == 'p:ground':
+            # elif group == 'p:bb':
+            #     self.x = other.x + size + object.ground.size
