@@ -75,65 +75,65 @@ def enter():
         start = [object.ground.size + object.ground.size * 2 * 2,
                  object.ground.size + object.ground.size * 2 * 7]
     elif server.stage == 1:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 1,
+                 object.ground.size + object.ground.size * 2 * 9]
     elif server.stage == 2:
-        start = [object.ground.size + object.ground.size * 2 * 18,
-                 object.ground.size + object.ground.size * 2 * 11]
+        start = [object.ground.size + object.ground.size * 2 * 1,
+                 object.ground.size + object.ground.size * 2 * 9]
     elif server.stage == 3:
         start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 10]
+                 object.ground.size + object.ground.size * 2 * 4]
     elif server.stage == 4:
         start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+                 object.ground.size + object.ground.size * 2 * 12]
     elif server.stage == 5:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 6,
+                 object.ground.size + object.ground.size * 2 * 7]
     elif server.stage == 6:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 3,
+                 object.ground.size + object.ground.size * 2 * 12]
     elif server.stage == 7:
-        start = [object.ground.size + object.ground.size * 2 * 1,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 3,
+                 object.ground.size + object.ground.size * 2 * 10]
     elif server.stage == 8:
         start = [object.ground.size + object.ground.size * 2 * 0,
                  object.ground.size + object.ground.size * 2 * 4]
     elif server.stage == 9:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 18,
+                 object.ground.size + object.ground.size * 2 * 11]
     elif server.stage == 10:
         start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+                 object.ground.size + object.ground.size * 2 * 10]
     elif server.stage == 11:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 18,
+                 object.ground.size + object.ground.size * 2 * 10]
     elif server.stage == 12:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 19,
+                 object.ground.size + object.ground.size * 2 * 12]
     elif server.stage == 13:
         start = [object.ground.size + object.ground.size * 2 * 2,
                  object.ground.size + object.ground.size * 2 * 10]
     elif server.stage == 14:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 1,
+                 object.ground.size + object.ground.size * 2 * 12]
     elif server.stage == 15:
         start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+                 object.ground.size + object.ground.size * 2 * 11]
     elif server.stage == 16:
         start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+                 object.ground.size + object.ground.size * 2 * 10]
     elif server.stage == 17:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 13,
+                 object.ground.size + object.ground.size * 2 * 12]
     elif server.stage == 18:
-        start = [object.ground.size + object.ground.size * 2 * 0,
+        start = [object.ground.size + object.ground.size * 2 * 1,
                  object.ground.size + object.ground.size * 2 * 4]
     elif server.stage == 19:
         start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+                 object.ground.size + object.ground.size * 2 * 12]
     elif server.stage == 20:
-        start = [object.ground.size + object.ground.size * 2 * 0,
-                 object.ground.size + object.ground.size * 2 * 4]
+        start = [object.ground.size + object.ground.size * 2 * 1,
+                 object.ground.size + object.ground.size * 2 * 12]
 
     server.p = Player(start[0], start[1])
     game_world.add_object(server.p, 1)

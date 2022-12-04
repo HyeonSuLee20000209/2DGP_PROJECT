@@ -135,6 +135,8 @@ class Player:
         self.item = None
         self.is_fj = False
         self.f_dir = 1
+        self.is_shoot = False
+        self.s_dir = None
 
         self.is_start = True
         self.is_revival = False
@@ -147,10 +149,13 @@ class Player:
     def update(self):
         self.cur_state.do(self)
 
-        if self.crash_check:
-            self.jumping()
+        if not self.is_shoot:
+            if self.crash_check:
+                self.jumping()
+            else:
+                self.gravity()
         else:
-            self.gravity()
+            self.shoot()
 
         if self.y < 0:
             self.die()
@@ -172,15 +177,20 @@ class Player:
 
     def handle_events(self, event):     # event : 키 입력 이벤트
         if (event.type, event.key) in key_event_table:
+            self.is_shoot = False
+
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
             self.is_fj = False
         if self.item is not None:
             if (event.type, event.key) == (pico2d.SDL_KEYDOWN, pico2d.SDLK_SPACE):
+                self.is_shoot = False
+
                 global max_height
                 self.accel = 1
                 self.accel_count = 0
                 if self.item == dj:
+                    max_height = 70
                     self.origin_y = self.y
                     self.is_fj = False
                     self.use_item()
@@ -190,6 +200,10 @@ class Player:
                         self.origin_y = self.y
                         self.is_fj = True
                         self.use_item()
+        if (event.type, event.key) == (pico2d.SDL_KEYDOWN, pico2d.SDLK_r):
+            self.cur_state = IDLE
+            self.cur_state.enter(self, None)
+            self.velocity = 0
 
     def use_item(self):
         self.crash_check = True
@@ -219,12 +233,22 @@ class Player:
         self.x += self.f_dir * 600 * game_framework.frame_time
         self.x = pico2d.clamp(0 + size, self.x, 1000 - size)
 
+    def shoot(self):
+        if self.s_dir is right:
+            self.x += 600 * game_framework.frame_time
+        else:
+            self.x -= 600 * game_framework.frame_time
+
     def set_location(self, x, y):
         self.x, self.y = x, y
 
     def die(self):
+        global max_height
+        max_height = 70
+        self.crash_check = False
         self.accel = 1
         self.accel_count = 0
+        self.is_shoot = False
         self.item = None
         self.is_fj = False
         self.image = pico2d.load_image('resource/Player.png')
@@ -290,13 +314,37 @@ class Player:
                 Player.sound.play(1)
                 max_height = 160
                 self.crash_check = True
+            elif group == 'p:sbr':
+                self.accel = 1
+                self.accel_count = 1
+                self.is_shoot = True
+                self.is_fj = False
+                self.s_dir = right
+                self.x = other.x + 25
+                self.y = other.y
+                self.origin_y = other.y
+            elif group == 'p:sbl':
+                self.accel = 1
+                self.accel_count = 1
+                self.is_shoot = True
+                self.is_fj = False
+                self.s_dir = left
+                self.x = other.x - 25
+                self.y = other.y
+                self.origin_y = other.y
         elif dir == right:
+            if group != 'p:sbr' and group != 'p:sbl':
+                self.is_shoot = False
             self.x = other.x - size - object.ground.size
+            self.is_fj = False
             # if group == 'p:ground':
             # elif group == 'p:bb':
             #     self.x = other.x - size - object.ground.size
         elif dir == left:
+            if group != 'p:sbr' and group != 'p:sbl':
+                self.is_shoot = False
             self.x = other.x + size + object.ground.size
+            self.is_fj = False
             # if group == 'p:ground':
             # elif group == 'p:bb':
             #     self.x = other.x + size + object.ground.size

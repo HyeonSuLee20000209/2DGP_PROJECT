@@ -6,6 +6,8 @@ stage = 0
 ground = []
 broken_block = []
 broken_jump_block = []
+shoot_block_right = []
+shoot_block_left = []
 e_trap = []
 spike = []
 dj = []
@@ -29,6 +31,9 @@ def clear():
 
     global dj, fj, jump_block, broken_jump_block
     dj, fj, jump_block, broken_jump_block = [], [], [], []
+
+    global shoot_block_left, shoot_block_right
+    shoot_block_left, shoot_block_right = [], []
 
     global star
     star = []
